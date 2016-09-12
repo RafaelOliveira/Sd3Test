@@ -98,4 +98,12 @@ class Data
 		-1.0, 1.0, 1.0,
 		1.0,-1.0, 1.0
 	];
+
+	public static var boxIndices:Array<Int> = [];
+
+	public static function fillBoxIndices():Void
+	{
+		for (i in 0...Std.int(boxVertices.length / 3))
+			boxIndices.push(i);
+	}
 }

@@ -63,7 +63,7 @@ class Engine
 				model.setMaterialAndBuffers(g);
 				
 				var mvp = FastMatrix4.identity();
-				mvp = mvp.multmat(camera.projectionMatrix);			
+				mvp = mvp.multmat(camera.projectionMatrix);
 				mvp = mvp.multmat(camera.viewMatrix);
 				mvp = mvp.multmat(model.modelMatrix);			
 				

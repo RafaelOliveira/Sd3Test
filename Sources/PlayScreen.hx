@@ -1,36 +1,55 @@
 package;
 
-import kha.Assets;
-import kha.Shaders;
-import kha.math.FastMatrix4;
-import td.Material;
-import td.models.SimpleModel;
-import td.models.TexturedModel;
+import kha.math.FastVector3;
 import td.Screen;
 import td.input.Mouse;
 import td.input.Keyboard;
+import models.GradBox;
+import models.TexBox;
 
 class PlayScreen extends Screen
 {
 	public function new():Void
 	{
 		super();
-
-		var indices:Array<Int> = [];
-		for (i in 0...Std.int(Data.boxVertices.length / 3))
-			indices.push(i);
-
-		var gradientMaterial = new Material(Shaders.gradient_vert, Shaders.gradient_frag);
-		var gradientModel = new SimpleModel(Data.boxVertices, indices, gradientMaterial);
-		gradientModel.modelMatrix = gradientModel.modelMatrix.multmat(FastMatrix4.translation(5, 0, 0));
-		add(gradientModel);
 		
-		var textureMaterial = new Material(Shaders.texture_vert, Shaders.texture_frag);		
-		add(new TexturedModel(Data.boxVertices, indices, Data.boxTextureCoords, Assets.images.uvtemplate, textureMaterial));
+		Data.fillBoxIndices();
+
+		var places:Array<Array<Int>> = [
+			[1, 1, 1, 1, 1],
+			[1, 0, 0, 0, 1],
+			[1, 0, 1, 0, 1],
+			[1, 0, 0, 0, 1],
+			[1, 1, 0, 1, 1]
+		];
+
+		for (z in 0...places.length)
+		{
+			for (x in 0...places[z].length)
+			{
+				if (places[z][x] != 0)
+				{
+					var r = Math.random();
+					var px = x * 2;
+					var pz = z * 2;
+
+					if (r < 0.5)
+						add(new GradBox(px, pz));
+					else
+						add(new TexBox(px, pz));
+				}
+			}
+		}				
+
+		//camera.setView(new FastVector3(0, 20, 20), new FastVector3(), new FastVector3(0, 1, 0));
+		camera.position.x = 5;
+		camera.position.z = 15;
 	}
 
 	override public function update():Void
 	{
+		super.update();
+
 		if (Mouse.isHeld())		
 			camera.updateAngleByMouse(0.005, Mouse.dx, Mouse.dy);
 

@@ -6,17 +6,30 @@ import kha.graphics4.VertexBuffer;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.Usage;
 import kha.math.FastMatrix4;
+import td.math.Transform;
+import td.math.Vec3;
 
 class Model
 {
+	public var position:Vec3;
+	public var rotation:Vec3;
+	public var scale:Vec3;
+
+	public var modelMatrix(get, set):FastMatrix4;
+	var modelTransform:Transform;
+
 	var vertexBuffer:VertexBuffer;
 	var indexBuffer:IndexBuffer;
 	
 	public var material:Material;	
-	public var modelMatrix:FastMatrix4;
 		
 	public function new(?material:Material):Void
-	{	
+	{
+		modelTransform = new Transform();
+		position = new Vec3(modelTransform);
+		rotation = new Vec3(modelTransform);
+		scale = new Vec3(modelTransform, 1, 1, 1);
+
 		// Use the passed material, otherwise use
 		// a material with just a red color
 		if (material != null)
@@ -25,7 +38,13 @@ class Model
 			this.material = new Material(Shaders.simple_vert, Shaders.simple_frag);
 			
 		modelMatrix = FastMatrix4.identity();
-	}		
+	}
+
+	public function update():Void
+	{
+		if (modelTransform.dirty)		
+			modelTransform.updateTransformation(position.value, rotation.value, scale.value);		
+	}	
 
 	public function setVertices(vertices:Array<Float>, ?otherData:Array<Array<Float>>):Void
 	{
@@ -123,5 +142,15 @@ class Model
 
 		// Bind state we want to draw with
 		g.setPipeline(material.pipeline);
+	}
+
+	inline function get_modelMatrix():FastMatrix4
+	{
+		return modelTransform.matrix;
+	}
+
+	inline function set_modelMatrix(value:FastMatrix4):FastMatrix4
+	{		
+		return modelTransform.matrix = value;
 	}
 }

@@ -15,7 +15,8 @@ class Screen
 
 	public function update():Void
 	{
-
+		for (model in models)
+			model.update();
 	}
 
 	public function add(model:Model):Void
