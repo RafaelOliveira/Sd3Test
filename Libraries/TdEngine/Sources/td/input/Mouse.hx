@@ -34,7 +34,13 @@ class Mouse
 		for (key in mouseUp.keys())
 			mouseUp.remove(key);
 
-		mouseJustPressed = false;
+		mouseJustPressed = false;		
+	}
+
+	public function postUpdate():Void
+	{
+		dx = 0;
+		dy = 0;
 	}
 
 	public function reset():Void

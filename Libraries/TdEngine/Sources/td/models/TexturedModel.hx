@@ -16,7 +16,7 @@ class TexturedModel extends Model
 		
 		material.bindAttribute('textureCoords', VertexData.Float2);		
 		
-		setVerticesAndTextureCoords(vertices, textureCoords);
+		setVertices(vertices, [textureCoords]);
 		setIndices(indices);		
 
 		this.image = image;

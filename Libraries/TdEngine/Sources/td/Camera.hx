@@ -7,48 +7,50 @@ import kha.math.FastVector3;
 class Camera
 {	
 	public static var instance:Camera;
+
+	public var freeMode:Bool;	
 		
 	public var position:FastVector3;
-	public var direction:FastVector3;
-	public var horizontalAngle(default, set):FastFloat;
-	public var verticalAngle(default, set):FastFloat;	
 	public var look:FastVector3;
 	public var up:FastVector3;
 
-	var rightVector:FastVector3;
-	var updateDirectionByAngle:Bool;
+	public var horizontalAngle:FastFloat;
+	public var verticalAngle:FastFloat;
+
+	var direction:FastVector3;
+	var rightVector:FastVector3;	
 	
 	public var projectionMatrix:FastMatrix4;
 	public var viewMatrix:FastMatrix4;	
 	
-	public function new(position:FastVector3, ?look:FastVector3, ?up:FastVector3):Void 
+	public function new():Void 
 	{		
+		freeMode = false;
+
 		// Initial horizontal angle: toward -Z
 		horizontalAngle = 3.14;
 		// Initial vertical angle: none
-		verticalAngle = 0.0;
-
-		updateDirectionByAngle = true;
+		verticalAngle = 0.0;		
 		
 		// Projection matrix: 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 		setProjection(45.0, 4.0 / 3.0, 0.1, 100.0);
 
-		this.position = position;
-		this.look = look != null ? look : new FastVector3(0, 0, 0);
-		this.up = up != null ? up : new FastVector3(0, 1, 0);  
+		position = new FastVector3(0, 0, 5);
+		look = new FastVector3(0, 0, 0);
+		up = new FastVector3(0, 1, 0);  
 			
 		viewMatrix = FastMatrix4.lookAt(
-			this.position,	// position in World Space
-			this.look,		// and looks at the origin
-			this.up			// Head is up (set to (0, -1, 0) to look upside-down)
-		);
+			position,	// position in World Space
+			look,		// and looks at the origin
+			up			// Head is up (set to (0, -1, 0) to look upside-down)
+		);		
 		
 		instance = this;		
 	}
 	
 	public function update():Void
 	{		
-		if (updateDirectionByAngle)
+		if (!freeMode)
 		{
 			// Direction : Spherical coordinates to Cartesian coordinates conversion
 			direction = new FastVector3(
@@ -68,12 +70,10 @@ class Camera
 
 			// Look vector
 			look = position.add(direction);
-
-			updateDirectionByAngle = false;
-		}		
+		}
 
 		// Camera matrix
-		viewMatrix = FastMatrix4.lookAt(position, look, up);
+		viewMatrix = FastMatrix4.lookAt(position, look, up);				
 	}
 	
 	public function setProjection(fov:FastFloat, ratio:FastFloat, nearPlane:FastFloat, farPlane:FastFloat):Void
@@ -86,48 +86,49 @@ class Camera
 		viewMatrix = FastMatrix4.lookAt(eye, look, up);
 	}
 	
-	public function moveForward(speed:FastFloat):Void
+	/**
+	 * Move forward in the direction defined by 
+	 * the horizontal and vertical angles.
+	 */
+	public function moveForward(value:FastFloat):Void
 	{
-		var v = direction.mult(speed);
-		position = position.add(v);
+		var v = direction.mult(value);
+		position = position.add(v);		
 	}
 
-	public function moveBackward(speed:FastFloat):Void 
+	/**
+	 * Move backward in the direction defined by 
+	 * the horizontal and vertical angles.
+	 */
+	public function moveBackward(value:FastFloat):Void 
 	{
-		var v = direction.mult(speed * -1);
-		position = position.add(v);
+		var v = direction.mult(value * -1);
+		position = position.add(v);		
 	}
 
-	public function strafeRight(speed:FastFloat):Void 
+	/**
+	 * Move to the right using the direction defined by 
+	 * the horizontal and vertical angles.
+	 */
+	public function strafeRight(value:FastFloat):Void 
 	{
-		var v = rightVector.mult(speed);
-		position = position.add(v);
+		var v = rightVector.mult(value);
+		position = position.add(v);		
 	}
 
-	public function strafeLeft(speed:FastFloat):Void 
+	/**
+	 * Move to the left using the direction defined by 
+	 * the horizontal and vertical angles.
+	 */
+	public function strafeLeft(value:FastFloat):Void 
 	{
-		var v = rightVector.mult(speed * -1);
-		position = position.add(v);
+		var v = rightVector.mult(value * -1);
+		position = position.add(v);		
 	}
 
-	public function updateDirectionByMouse(speed:FastFloat, mouseDeltaX:FastFloat, mouseDeltaY:FastFloat):Void
+	public function updateAngleByMouse(value:FastFloat, mouseDeltaX:FastFloat, mouseDeltaY:FastFloat):Void
 	{		
-		horizontalAngle += speed * mouseDeltaX * -1;
-		verticalAngle += speed * mouseDeltaY * -1;
-		updateDirectionByAngle = true;
-	}
-	
-	function set_horizontalAngle(value:FastFloat):FastFloat
-	{
-		updateDirectionByAngle = true;
-		
-		return horizontalAngle = value;
-	}
-	
-	function set_verticalAngle(value:FastFloat):FastFloat
-	{
-		updateDirectionByAngle = true;
-		
-		return verticalAngle = value;
-	}	
+		horizontalAngle += value * mouseDeltaX * -1;
+		verticalAngle += value * mouseDeltaY * -1;		
+	}		
 }

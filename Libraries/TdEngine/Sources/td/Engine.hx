@@ -2,7 +2,6 @@ package td;
 
 import kha.graphics4.Graphics;
 import kha.math.FastMatrix4;
-import kha.math.FastVector3;
 import td.input.Keyboard;
 import td.input.Mouse;
 
@@ -19,7 +18,7 @@ class Engine
 	{
 		keyboard = new Keyboard();
 		mouse = new Mouse();
-		camera = new Camera(new FastVector3(0, 0, 5));
+		camera = new Camera();
 
 		screenList = new Map<String, Screen>();		
 		activeScreen = null;
@@ -51,6 +50,8 @@ class Engine
 
 		if (activeScreen != null)
 			activeScreen.update();
+
+		mouse.postUpdate();
 	}
 	
 	public function render(g:Graphics):Void
