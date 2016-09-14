@@ -4,15 +4,11 @@ import kha.FastFloat;
 import kha.math.FastMatrix4;
 import kha.math.FastVector3;
 import td.math.Vec3;
-import td.math.Transform;
 
-class Camera
+class Camera extends Transform
 {	
-	public static var instance:Camera;
-
-	public var freeMode:Bool;	
-		
-	public var position:Vec3;
+	static var instance:Camera;
+	
 	public var look:Vec3;
 	public var up:Vec3;
 
@@ -23,15 +19,10 @@ class Camera
 	var rightVector:FastVector3;	
 	
 	public var projectionMatrix:FastMatrix4;
-
-	var viewTransform:Transform;
-	public var viewMatrix(get, set):FastMatrix4;
 	
 	public function new():Void 
-	{		
-		freeMode = false;
-
-		viewTransform = new Transform();
+	{
+		super();
 
 		// Initial horizontal angle: toward -Z
 		horizontalAngle = 3.14;
@@ -41,50 +32,53 @@ class Camera
 		// Projection matrix: 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 		setProjection(45.0, 4.0 / 3.0, 0.1, 100.0);		
 
-		position = new Vec3(viewTransform, 0, 0, 5);
-		look = new Vec3(viewTransform);
-		up = new Vec3(viewTransform, 0, 1, 0);  
+		position.set(0, 0, 25);
+		look = new Vec3(this);
+		up = new Vec3(this, 0, 1, 0);  
 			
-		/*viewTransform.lookAt(
+		matrix = FastMatrix4.lookAt(
 			position.value,	// position in World Space
 			look.value,		// and looks at the origin
 			up.value		// Head is up (set to (0, -1, 0) to look upside-down)
-		);*/
+		);
 
-		viewTransform.dirty = true;
-		update();		
+		//matrix = FastMatrix4.identity();
+		//matrix = matrix.multmat(FastMatrix4.perspectiveProjection(45.0, 4.0 / 3.0, 0.1, 100.0));
+		//matrix = matrix.multmat(FastMatrix4.lookAt(position.value, look.value, up.value));
+		matrixDirty = false;
+
+		//matrixDirty = true;
+		//update();
 		
-		instance = this;		
+		instance = this;
 	}
 	
 	public function update():Void
 	{	
-		if (viewTransform.dirty)
-		{
-			if (!freeMode)
-			{
-				// Direction : Spherical coordinates to Cartesian coordinates conversion
-				direction = new FastVector3(
-					Math.cos(verticalAngle) * Math.sin(horizontalAngle),
-					Math.sin(verticalAngle),
-					Math.cos(verticalAngle) * Math.cos(horizontalAngle)
-				);
+		if (matrixDirty)
+		{			
+			// Direction : Spherical coordinates to Cartesian coordinates conversion
+			direction = new FastVector3(
+				Math.cos(verticalAngle) * Math.sin(horizontalAngle),
+				Math.sin(verticalAngle),
+				Math.cos(verticalAngle) * Math.cos(horizontalAngle)
+			);			
 
-				rightVector = new FastVector3(
-					Math.sin(horizontalAngle - 3.14 / 2.0), 
-					0,
-					Math.cos(horizontalAngle - 3.14 / 2.0)
-				);
+			rightVector = new FastVector3(
+				Math.sin(horizontalAngle - 3.14 / 2.0), 
+				0,
+				Math.cos(horizontalAngle - 3.14 / 2.0)
+			);
 
-				// Up vector
-				up.value = rightVector.cross(direction);
+			// Up vector
+			up.value = rightVector.cross(direction);
 
-				// Look vector
-				look.value = position.value.add(direction);										
-			}
+			// Look vector
+			look.value = position.value.add(direction);			
 
 			// Camera matrix
-			viewTransform.lookAt(position.value, look.value, up.value);			
+			matrix = FastMatrix4.lookAt(position.value, look.value, up.value);
+			matrixDirty = false;			
 		}
 	}	
 	
@@ -93,9 +87,17 @@ class Camera
 		projectionMatrix = FastMatrix4.perspectiveProjection(fov, ratio, nearPlane, farPlane);
 	}
 	
-	public function setView(eye:FastVector3, look:FastVector3, up:FastVector3):Void
+	public function setView(position:FastVector3, look:FastVector3, up:FastVector3):Void
 	{
-		viewTransform.lookAt(eye, look, up);
+		this.position.value = position;
+		this.look.value = look;
+		this.up.value = up;
+
+		direction = position.sub(look);
+		direction.normalize();		
+
+		matrix = FastMatrix4.lookAt(position, look, up);
+		matrixDirty = false;
 	}
 	
 	/**
@@ -142,28 +144,23 @@ class Camera
 	{		
 		horizontalAngle += value * mouseDeltaX * -1;
 		verticalAngle += value * mouseDeltaY * -1;
-		viewTransform.dirty = true;
+		matrixDirty = true;
+	}
+
+	public static function get():Camera
+	{
+		return instance;
 	}
 
 	function set_horizontalAngle(value:FastFloat):FastFloat
 	{
-		viewTransform.dirty = true;
+		matrixDirty = true;
 		return horizontalAngle = value;
 	}
 
 	function set_verticalAngle(value:FastFloat):FastFloat
 	{
-		viewTransform.dirty = true;
+		matrixDirty = true;
 		return verticalAngle = value;
-	}
-
-	inline function get_viewMatrix():FastMatrix4
-	{
-		return viewTransform.matrix;
-	}
-
-	inline function set_viewMatrix(value:FastMatrix4):FastMatrix4
-	{		
-		return viewTransform.matrix = value;
-	} 
+	}	 
 }

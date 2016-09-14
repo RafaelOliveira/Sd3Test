@@ -1,10 +1,10 @@
-package models;
+package objects;
 
-import td.models.SimpleModel;
+import td.objects.SimpleObject;
 import td.Material;
 import kha.Shaders;
 
-class GradBox extends SimpleModel
+class GradBox extends SimpleObject
 {
 	public function new(x:Float, z:Float):Void
 	{

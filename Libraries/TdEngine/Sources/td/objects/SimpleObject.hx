@@ -1,6 +1,6 @@
-package td.models;
+package td.objects;
 
-class SimpleModel extends Model
+class SimpleObject extends Object
 {
 	public function new(vertices:Array<Float>, indices:Array<Int>, material:Material):Void
 	{

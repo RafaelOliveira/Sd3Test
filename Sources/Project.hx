@@ -19,7 +19,7 @@ class Project
 	function assetsLoaded():Void
 	{		
 		engine = new Engine();
-		engine.addScreen('play', new PlayScreen(), true); 		
+		engine.addScene('play', new PlayScene(), true); 		
 
 		System.notifyOnRender(render);
 		Scheduler.addTimeTask(update, 0, 1 / 60);

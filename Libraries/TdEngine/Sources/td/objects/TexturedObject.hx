@@ -1,11 +1,11 @@
-package td.models;
+package td.objects;
 
 import kha.graphics4.Graphics;
 import kha.Image;
 import kha.graphics4.TextureUnit;
 import kha.graphics4.VertexData;
 
-class TexturedModel extends Model
+class TexturedObject extends Object
 {	
 	var textureId:TextureUnit;
     var image:Image;

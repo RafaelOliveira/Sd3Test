@@ -1,11 +1,11 @@
-package models;
+package objects;
 
 import kha.Assets;
 import kha.Shaders;
 import td.Material;
-import td.models.TexturedModel;
+import td.objects.TexturedObject;
 
-class TexBox extends TexturedModel
+class TexBox extends TexturedObject
 {
 	public function new(x:Float = 0, z:Float = 0):Void
 	{

@@ -1,13 +1,13 @@
 package;
 
 import kha.math.FastVector3;
-import td.Screen;
+import td.Scene;
 import td.input.Mouse;
 import td.input.Keyboard;
-import models.GradBox;
-import models.TexBox;
+import objects.GradBox;
+import objects.TexBox;
 
-class PlayScreen extends Screen
+class PlayScene extends Scene
 {
 	public function new():Void
 	{
@@ -41,9 +41,9 @@ class PlayScreen extends Screen
 			}
 		}				
 
-		//camera.setView(new FastVector3(0, 20, 20), new FastVector3(), new FastVector3(0, 1, 0));
-		camera.position.x = 5;
-		camera.position.z = 15;
+		camera.setView(new FastVector3(0, 20, 20), new FastVector3(), new FastVector3(0, 1, 0));
+		//camera.position.x = 5;
+		//camera.position.z = 15;
 	}
 
 	override public function update():Void

@@ -5,24 +5,61 @@ import kha.FastFloat;
 
 class Vec3
 {
-	public var value(default, set):FastVector3;
-	public var transform:Transform;
+	public var value(default, set):FastVector3;	
 
 	public var x(get, set):FastFloat;
 	public var y(get, set):FastFloat;
 	public var z(get, set):FastFloat;
+	public var length(get, set): FastFloat;
 
-	public var dirty:Bool;
+	var transform:Transform;
 
 	public function new(transform:Transform, x:FastFloat = 0, y:FastFloat = 0, z:FastFloat = 0):Void
 	{	
 		this.transform = transform;	
-		value = new FastVector3(x, y, z);		
+		value = new FastVector3(x, y, z);
+	}
+
+	public function set(x:FastFloat, y:FastFloat, z:FastFloat):Void
+	{
+		value.x = x;
+		value.y = y;
+		value.z = z;
+		transform.matrixDirty = true;
+	}
+
+	public function stepAdd(x:FastFloat, y:FastFloat, z:FastFloat):Void
+	{
+		value.x += x;
+		value.y += y;
+		value.z += z;
+		transform.matrixDirty = true;
+	}
+
+	public function stepMult(x:FastFloat, y:FastFloat, z:FastFloat):Void
+	{
+		value.x *= x;
+		value.y *= y;
+		value.z *= z;
+		transform.matrixDirty = true;
+	}
+	
+	public inline function stepMultScalar(value:FastFloat):Void
+	{
+		this.value.x *= value;
+		this.value.y *= value;
+		this.value.z *= value;
+		transform.matrixDirty = true;
+	}
+	
+	public inline function normalize():Void 
+	{
+		length = 1;
 	}
 
 	function set_value(value:FastVector3):FastVector3
 	{
-		transform.dirty = true;
+		transform.matrixDirty = true;
 		return this.value = value;
 	}
 
@@ -33,7 +70,7 @@ class Vec3
 
 	function set_x(value:FastFloat):FastFloat
 	{
-		transform.dirty = true;
+		transform.matrixDirty = true;
 		return this.value.x = value;
 	}
 
@@ -44,7 +81,7 @@ class Vec3
 
 	function set_y(value:FastFloat):FastFloat
 	{
-		transform.dirty = true;
+		transform.matrixDirty = true;
 		return this.value.y = value;
 	}
 
@@ -55,7 +92,26 @@ class Vec3
 
 	function set_z(value:FastFloat):FastFloat
 	{
-		transform.dirty = true;
+		transform.matrixDirty = true;
 		return this.value.z = value;
+	}
+
+	private function get_length():FastFloat
+	{
+		return Math.sqrt(x * x + y * y + z * z);
+	}
+	
+	private function set_length(length:FastFloat):FastFloat 
+	{
+		transform.matrixDirty = true;
+
+		var currentLength = get_length();
+		if (currentLength == 0) return 0;
+		var mul = length / currentLength;
+		x *= mul;
+		y *= mul;
+		z *= mul;
+
+		return length;
 	}
 }
