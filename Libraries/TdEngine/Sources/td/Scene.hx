@@ -39,8 +39,7 @@ class Scene
 		{
 			object.setMaterialAndBuffers(g);
 			
-			var mvp = FastMatrix4.identity();
-			mvp = mvp.multmat(camera.projectionMatrix);
+			var mvp = FastMatrix4.identity();			
 			mvp = mvp.multmat(camera.matrix);
 			mvp = mvp.multmat(object.matrix);			
 			

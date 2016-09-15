@@ -11,7 +11,7 @@ class TexBox extends TexturedObject
 	{
 		var material = new Material(Shaders.texture_vert, Shaders.texture_frag);
 
-		super(Data.boxVertices, Data.boxIndices, Data.boxTextureCoords, Assets.images.uvtemplate, material);
+		super(Data.boxVertices, Data.boxIndices, Data.boxTextureCoords, Assets.images.uvplasma, material);
 
 		if (x != 0)
 			position.x = x;

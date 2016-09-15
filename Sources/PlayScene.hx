@@ -1,6 +1,5 @@
 package;
 
-import kha.math.FastVector3;
 import td.Scene;
 import td.input.Mouse;
 import td.input.Keyboard;
@@ -11,7 +10,7 @@ class PlayScene extends Scene
 {
 	public function new():Void
 	{
-		super();
+		super();		
 		
 		Data.fillBoxIndices();
 
@@ -40,27 +39,27 @@ class PlayScene extends Scene
 				}
 			}
 		}				
-
-		camera.setView(new FastVector3(0, 20, 20), new FastVector3(), new FastVector3(0, 1, 0));
-		//camera.position.x = 5;
-		//camera.position.z = 15;
+		
+		camera.position.x = 5;
+		camera.position.z = 15;
 	}
 
 	override public function update():Void
 	{
 		super.update();
 
-		if (Mouse.isHeld())		
+		if (Mouse.isHeld())
 			camera.updateAngleByMouse(0.005, Mouse.dx, Mouse.dy);
+			
 
-		if (Keyboard.isHeld('a'))
-			camera.strafeLeft(0.1);
-		else if (Keyboard.isHeld('d'))
-			camera.strafeRight(0.1);
-
-		if (Keyboard.isHeld('w'))
+		if (Keyboard.isHeld('a'))			
+			camera.moveToLeft(0.05);
+		else if (Keyboard.isHeld('d'))			
+			camera.moveToRight(0.05);
+		
+		if (Keyboard.isHeld('w'))			
 			camera.moveForward(0.1);
-		else if (Keyboard.isHeld('s'))
-			camera.moveBackward(0.1);
+		else if (Keyboard.isHeld('s'))			
+			camera.moveBackward(0.1);		
 	}
 }

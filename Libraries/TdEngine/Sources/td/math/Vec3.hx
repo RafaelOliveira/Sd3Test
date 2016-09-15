@@ -28,23 +28,23 @@ class Vec3
 		transform.matrixDirty = true;
 	}
 
-	public function stepAdd(x:FastFloat, y:FastFloat, z:FastFloat):Void
+	public function addBy(value:FastVector3):Void
 	{
-		value.x += x;
-		value.y += y;
-		value.z += z;
+		this.value.x += value.x;
+		this.value.y += value.y;
+		this.value.z += value.z;
 		transform.matrixDirty = true;
 	}
 
-	public function stepMult(x:FastFloat, y:FastFloat, z:FastFloat):Void
+	public function multBy(value:FastVector3):Void
 	{
-		value.x *= x;
-		value.y *= y;
-		value.z *= z;
+		this.value.x *= value.x;
+		this.value.y *= value.y;
+		this.value.z *= value.z;
 		transform.matrixDirty = true;
 	}
 	
-	public inline function stepMultScalar(value:FastFloat):Void
+	public inline function multByScalar(value:FastFloat):Void
 	{
 		this.value.x *= value;
 		this.value.y *= value;
