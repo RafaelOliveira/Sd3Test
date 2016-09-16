@@ -44,7 +44,7 @@ class Scene
 			mvp = mvp.multmat(object.matrix);			
 			
 			// Send our transformation to the currently bound shader, in the "mvp" uniform
-			g.setMatrix(object.material.getConstantLocation('mvp'), mvp);
+			g.setMatrix(object.model.material.getConstantLocation('mvp'), mvp);
 				
 			g.drawIndexedVertices();
 		}

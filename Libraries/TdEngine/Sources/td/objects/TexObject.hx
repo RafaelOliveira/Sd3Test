@@ -1,24 +1,29 @@
 package td.objects;
 
-class TexShadedObject extends Object
-{
+import kha.graphics4.Graphics;
+import kha.Image;
+import kha.graphics4.TextureUnit;
+import kha.graphics4.VertexData;
+
+class TexObject extends Object
+{	
 	var textureId:TextureUnit;
     var image:Image;
 
-	public function new(data:Array<Float>, indices:Array<Int>, image:Image, material:Material):Void
+	public function new(vertices:Array<Float>, indices:Array<Int>, textureCoords:Array<Float>, material:Material, image:Image):Void
 	{
-		super(material);
-		
 		material.bindAttribute('textureCoords', VertexData.Float2);
-		material.bindAttribute('normals', VertexData.Float3);
-		
-		setVertices(data);
-		setIndices(indices);		
 
+		var model = new Model(material);
+		model.setVertices(vertices, [textureCoords]);
+		model.setIndices(indices);
+
+		super(model);						
+		
 		this.image = image;
 		textureId = material.getTextureUnit('textureSampler');
 	}
-
+	
 	override public function setMaterialAndBuffers(g:Graphics):Void 
 	{
 		// Uses the vertexBuffer, indexBuffer and pipeline
@@ -26,5 +31,5 @@ class TexShadedObject extends Object
 		
 		// Set texture
 		g.setTexture(textureId, image);
-	}
+	}	
 }

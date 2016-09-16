@@ -16,18 +16,21 @@ class Transform
 	public var upDirection:FastVector3;
 
 	public var matrix:FastMatrix4;
-	public var matrixDirty:Bool;
+	public var matrixDirty:Bool;	
 
 	public function new():Void
 	{
 		position = new Vec3(this);
 		rotation = new Vec3(this);
 		scale = new Vec3(this, 1, 1, 1);
+
 		updateDirections();
 
-		// Each class that extends Transform creates the matrix
-		// in a different way, so the matrix creation is delegated to that class
+		matrix = FastMatrix4.identity();
+		matrixDirty = false;		
 	}
+
+	public function update():Void {}	
 
 	public function updateMatrix(position:FastVector3, rotation:FastVector3, scale:FastVector3):Void
 	{

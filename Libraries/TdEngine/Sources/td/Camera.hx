@@ -26,7 +26,7 @@ class Camera extends Transform
 		instance = this;
 	}
 
-	public function update():Void
+	override public function update():Void
 	{	
 		if (matrixDirty)
 		{	
