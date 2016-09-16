@@ -1,5 +1,10 @@
 package td.objects;
 
+import kha.Image;
+import kha.graphics4.Graphics;
+import kha.graphics4.TextureUnit;
+import kha.graphics4.VertexData;
+
 class TexLightObject extends Object
 {
 	var textureId:TextureUnit;
@@ -7,14 +12,14 @@ class TexLightObject extends Object
 
 	public function new(data:Array<Float>, indices:Array<Int>, material:Material, image:Image):Void
 	{
+		material.bindAttribute('textureCoords', VertexData.Float2);
+		material.bindAttribute('normals', VertexData.Float3);
+
 		var model = new Model(material);
 		model.setVertices(data);
 		model.setIndices(indices);
 
 		super(model);
-		
-		model.material.bindAttribute('textureCoords', VertexData.Float2);
-		model.material.bindAttribute('normals', VertexData.Float3);				
 
 		this.image = image;
 		textureId = model.material.getTextureUnit('textureSampler');

@@ -1,7 +1,7 @@
 package td.objects;
 
-import kha.graphics4.Graphics;
 import kha.Image;
+import kha.graphics4.Graphics;
 import kha.graphics4.TextureUnit;
 import kha.graphics4.VertexData;
 

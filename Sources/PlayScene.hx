@@ -5,6 +5,7 @@ import td.input.Mouse;
 import td.input.Keyboard;
 import objects.GradBox;
 import objects.TexBox;
+import objects.Plus3d;
 
 class PlayScene extends Scene
 {
@@ -38,7 +39,10 @@ class PlayScene extends Scene
 						add(new TexBox(px, pz));
 				}
 			}
-		}				
+		}
+
+		var plus3d = new Plus3d(4, 2, 4);
+		add(plus3d);	
 		
 		camera.position.x = 5;
 		camera.position.z = 15;
