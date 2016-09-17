@@ -13,7 +13,7 @@ class PlayScene extends Scene
 	{
 		super();		
 		
-		Data.fillBoxIndices();
+		Data.loadData();
 
 		var places:Array<Array<Int>> = [
 			[1, 1, 1, 1, 1],

@@ -1,21 +1,13 @@
 package objects;
 
-import td.objects.ColorObject;
-import td.Material;
-import kha.Shaders;
+import td.objects.Object;
 
-class GradBox extends ColorObject
+class GradBox extends Object
 {
 	public function new(x:Float, z:Float):Void
-	{	
-		var material = new Material(Shaders.gradient_vert, Shaders.gradient_frag);		
-
-		super(Data.boxVertices, Data.boxIndices, material);
-
-		if (x != 0)
-			position.x = x;
-
-		if (z != 0)
-			position.z = z;
+	{
+		super(Data.gradientBoxModel, Data.gradientMaterial);
+		
+		position.set(x, 0, z);		
 	}
 }

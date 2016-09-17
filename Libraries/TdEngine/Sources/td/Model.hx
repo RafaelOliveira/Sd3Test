@@ -1,6 +1,5 @@
 package td;
 
-import kha.Shaders;
 import kha.graphics4.VertexBuffer;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.Usage;
@@ -8,21 +7,19 @@ import kha.graphics4.Usage;
 class Model
 {
 	public var vertexBuffer:VertexBuffer;
-	public var indexBuffer:IndexBuffer;
-	
-	public var material:Material;
+	public var indexBuffer:IndexBuffer;	 
 		
-	public function new(?material:Material):Void
+	public function new(material:Material, vertices:Array<Float>, indices:Array<Int>, ?otherData:Array<Array<Float>>):Void 
 	{
-		// Use the passed material, otherwise use
-		// a material with just a red color
-		if (material != null)
-			this.material = material;
+		if (otherData != null)
+			setVertices(material, vertices, otherData);
 		else
-			this.material = new Material(Shaders.simple_vert, Shaders.simple_frag);				
-	}		
+			setVertices(material, vertices);
+			
+		setIndices(indices);
+	}	
 
-	public function setVertices(vertices:Array<Float>, ?otherData:Array<Array<Float>>):Void
+	public function setVertices(material:Material, vertices:Array<Float>, ?otherData:Array<Array<Float>>):Void
 	{
 		var vertexCount = Std.int(vertices.length / 3); // Vertex count - 3 floats per vertex
 

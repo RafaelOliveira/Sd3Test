@@ -1,26 +1,15 @@
 package;
 
+import kha.Assets;
+import kha.Shaders;
+import td.Material;
+import td.Model;
+import td.materials.TexMaterial;
+import td.materials.TexLightMaterial;
+import td.loaders.ObjLoader;
+
 class Data
 {
-	/*var vertices = [			
-		-0.5,  0.5, 0,	// v0
-		-0.5, -0.5, 0,	// v1
-		0.5, -0.5, 0,	// v2
-		0.5,  0.5, 0,	// v3
-	];
-
-	var indices = [
-		0, 1, 3,	// Top left triangle (v0, v1, v3)
-		3, 1, 2		// Bottom right triangle (v3, v1, v2)
-	];
-
-	var textureCoords = [
-		0.0, 0.0,	// v0
-		0.0, 1.0,	// v1
-		1.0, 1.0,	// v2
-		1.0, 0.0	// v3
-	];*/
-
 	public static var boxTextureCoords:Array<Float> = [
 		0.000059, 0.000004, 
 		0.000103, 0.336048, 
@@ -101,9 +90,31 @@ class Data
 
 	public static var boxIndices:Array<Int> = [];
 
-	public static function fillBoxIndices():Void
+	public static var gradientMaterial:Material;
+	public static var texMaterial:TexMaterial;
+	public static var texLightMaterial:TexLightMaterial;
+
+	public static var gradientBoxModel:Model;
+	public static var texBoxModel:Model;
+	public static var plus3dModel:Model;
+
+	public static function loadData():Void
 	{
+		// box indices
 		for (i in 0...Std.int(boxVertices.length / 3))
 			boxIndices.push(i);
+
+		// materials
+		gradientMaterial = new Material(Shaders.gradient_vert, Shaders.gradient_frag);
+		texMaterial = new TexMaterial();
+		texLightMaterial = new TexLightMaterial();		
+
+		// box models
+		gradientBoxModel = new Model(gradientMaterial, boxVertices, boxIndices);
+		texBoxModel = new Model(texMaterial, boxVertices, boxIndices, [boxTextureCoords]);		
+
+		// plus3d model
+		var obj = new ObjLoader(Assets.blobs.plus3d_obj.toString());
+		plus3dModel = new Model(texLightMaterial, obj.data, obj.indices);		
 	}
 }

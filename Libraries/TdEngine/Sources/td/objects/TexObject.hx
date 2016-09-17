@@ -3,22 +3,15 @@ package td.objects;
 import kha.Image;
 import kha.graphics4.Graphics;
 import kha.graphics4.TextureUnit;
-import kha.graphics4.VertexData;
 
 class TexObject extends Object
 {	
 	var textureId:TextureUnit;
     var image:Image;
 
-	public function new(vertices:Array<Float>, indices:Array<Int>, textureCoords:Array<Float>, material:Material, image:Image):Void
+	public function new(model:Model, material:Material, image:Image):Void
 	{
-		material.bindAttribute('textureCoords', VertexData.Float2);
-
-		var model = new Model(material);
-		model.setVertices(vertices, [textureCoords]);
-		model.setIndices(indices);
-
-		super(model);						
+		super(model, material);						
 		
 		this.image = image;
 		textureId = material.getTextureUnit('textureSampler');
