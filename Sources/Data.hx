@@ -5,7 +5,6 @@ import kha.Shaders;
 import td.Material;
 import td.Model;
 import td.materials.TexMaterial;
-import td.materials.TexLightMaterial;
 import td.loaders.ObjLoader;
 
 class Data
@@ -91,8 +90,7 @@ class Data
 	public static var boxIndices:Array<Int> = [];
 
 	public static var gradientMaterial:Material;
-	public static var texMaterial:TexMaterial;
-	public static var texLightMaterial:TexLightMaterial;
+	public static var texMaterial:TexMaterial;	
 
 	public static var gradientBoxModel:Model;
 	public static var texBoxModel:Model;
@@ -101,20 +99,19 @@ class Data
 	public static function loadData():Void
 	{
 		// box indices
-		for (i in 0...Std.int(boxVertices.length / 3))
-			boxIndices.push(i);
+		//for (i in 0...Std.int(boxVertices.length / 3))
+		//	boxIndices.push(i);
 
 		// materials
-		gradientMaterial = new Material(Shaders.gradient_vert, Shaders.gradient_frag);
-		texMaterial = new TexMaterial();
-		texLightMaterial = new TexLightMaterial();		
+		//gradientMaterial = new Material(Shaders.gradient_vert, Shaders.gradient_frag);
+		texMaterial = new TexMaterial();				
 
 		// box models
-		gradientBoxModel = new Model(gradientMaterial, boxVertices, boxIndices);
-		texBoxModel = new Model(texMaterial, boxVertices, boxIndices, [boxTextureCoords]);		
+		//gradientBoxModel = new Model(gradientMaterial, boxVertices, boxIndices);
+		//texBoxModel = new Model(texMaterial, boxVertices, boxIndices, [boxTextureCoords]);		
 
 		// plus3d model
 		var obj = new ObjLoader(Assets.blobs.plus3d_obj.toString());
-		plus3dModel = new Model(texLightMaterial, obj.data, obj.indices);		
+		plus3dModel = new Model(texMaterial, obj.data, obj.indices);		
 	}
 }

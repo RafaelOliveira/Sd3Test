@@ -2,19 +2,17 @@ package td.objects;
 
 import kha.Image;
 import kha.graphics4.Graphics;
-import kha.graphics4.TextureUnit;
+import td.materials.TexMaterial;
 
 class TexObject extends Object
-{	
-	var textureId:TextureUnit;
-    var image:Image;
+{		
+    var image:Image;	
 
-	public function new(model:Model, material:Material, image:Image):Void
+	public function new(model:Model, material:TexMaterial, image:Image):Void
 	{
 		super(model, material);						
 		
-		this.image = image;
-		textureId = material.getTextureUnit('textureSampler');
+		this.image = image;		
 	}
 	
 	override public function setMaterialAndBuffers(g:Graphics):Void 
@@ -23,6 +21,6 @@ class TexObject extends Object
 		super.setMaterialAndBuffers(g);
 		
 		// Set texture
-		g.setTexture(textureId, image);
+		g.setTexture(material.textureId, image);	
 	}	
 }

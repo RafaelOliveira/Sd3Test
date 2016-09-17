@@ -1,6 +1,7 @@
 package;
 
 import td.Scene;
+import kha.Color;
 import td.input.Mouse;
 import td.input.Keyboard;
 import objects.GradBox;
@@ -23,7 +24,7 @@ class PlayScene extends Scene
 			[1, 1, 0, 1, 1]
 		];
 
-		for (z in 0...places.length)
+		/*for (z in 0...places.length)
 		{
 			for (x in 0...places[z].length)
 			{
@@ -39,13 +40,17 @@ class PlayScene extends Scene
 						add(new TexBox(px, pz));
 				}
 			}
-		}
+		}*/
 
-		var plus3d = new Plus3d(4, 2, 4);
-		add(plus3d);	
+		var plus3d = new Plus3d(4, 0, 4);
+		add(plus3d);
+
+		setLight(4, 2, 8, Color.Red);
 		
 		camera.position.x = 5;
-		camera.position.z = 15;
+		camera.position.y = 2;
+		camera.position.z = 10;
+		camera.horizontalAngle = 3.5;
 	}
 
 	override public function update():Void
@@ -64,6 +69,16 @@ class PlayScene extends Scene
 		if (Keyboard.isHeld('w'))			
 			camera.moveForward(0.1);
 		else if (Keyboard.isHeld('s'))			
-			camera.moveBackward(0.1);		
+			camera.moveBackward(0.1);
+
+		if (Keyboard.isHeld('left'))
+			light.position.x -= 0.3;
+		else if (Keyboard.isHeld('right'))
+			light.position.x += 0.3;
+
+		if (Keyboard.isHeld('up'))
+			light.position.z -= 0.3;
+		else if (Keyboard.isHeld('down'))
+			light.position.z += 0.3;		
 	}
 }

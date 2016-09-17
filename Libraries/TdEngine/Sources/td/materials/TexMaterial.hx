@@ -7,8 +7,11 @@ class TexMaterial extends Material
 {
 	public function new():Void
 	{
-		super(Shaders.texture_vert, Shaders.texture_frag);
+		super(Shaders.texture_pf_light_vert, Shaders.texture_pf_light_frag);
 
-		bindAttribute('textureCoords', VertexData.Float2);
-	}
+		bindAttribute('textureCoord', VertexData.Float2);
+		bindAttribute('normal', VertexData.Float3);
+
+		textureId = getTextureUnit('textureSampler');
+	}	
 }

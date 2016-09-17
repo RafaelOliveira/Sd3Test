@@ -2,6 +2,7 @@ package td;
 
 import kha.FastFloat;
 import kha.math.FastMatrix4;
+import kha.math.FastMatrix3;
 import kha.math.FastVector3;
 import td.math.Vec3;
 
@@ -16,7 +17,9 @@ class Transform
 	public var upDirection:FastVector3;
 
 	public var matrix:FastMatrix4;
-	public var matrixDirty:Bool;	
+	public var matrixDirty:Bool;
+
+	public var normalMatrix:FastMatrix4;
 
 	public function new():Void
 	{
@@ -27,6 +30,7 @@ class Transform
 		updateDirections();
 
 		matrix = FastMatrix4.identity();
+		updateNormalMatrix();
 		matrixDirty = false;		
 	}
 
@@ -46,8 +50,18 @@ class Transform
 			matrix = matrix.multmat(FastMatrix4.rotationZ(rotation.z));
 
 		matrix = matrix.multmat(FastMatrix4.translation(position.x, position.y, position.z));
+		updateNormalMatrix();		 
 
 		matrixDirty = false;
+	}
+
+	public function updateNormalMatrix():Void
+	{
+		var normalMat3 = getMatrix3().inverse().transpose();
+		normalMatrix = new FastMatrix4(normalMat3._00, normalMat3._10, normalMat3._20, 0,
+										normalMat3._01, normalMat3._11, normalMat3._21, 0,
+										normalMat3._02, normalMat3._12, normalMat3._22, 0,
+										0, 0, 0, 0);
 	}
 
 	public function updateDirections():Void
@@ -101,5 +115,12 @@ class Transform
 	{
 		var v = rightDirection.mult(value * -1);
 		position.value = position.value.add(v);		
+	}
+
+	public function getMatrix3():FastMatrix3
+	{
+		return new FastMatrix3(matrix._00, matrix._10, matrix._20,
+								matrix._01, matrix._11, matrix._21,
+								matrix._02, matrix._12, matrix._22);
 	}
 }

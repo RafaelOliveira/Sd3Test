@@ -7,7 +7,7 @@ class Plus3d extends TexObject
 {
 	public function new(x:Float = 0, y:Float = 0, z:Float = 0):Void
 	{
-		super(Data.plus3dModel, Data.texLightMaterial, Assets.images.plus3d);
+		super(Data.plus3dModel, Data.texMaterial, Assets.images.plus3d);
 
 		scale.multByScalar(0.7);
 		

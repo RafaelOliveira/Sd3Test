@@ -1,5 +1,5 @@
 // Input vertex data, different for all executions of this shader
-attribute vec3 pos;
+attribute vec3 position;
 
 // Values that stay constant for the whole mesh
 uniform mat4 mvp;
@@ -7,5 +7,5 @@ uniform mat4 mvp;
 void kore()
 {
 	// Output position of the vertex, in clip space : mvp * position
-	gl_Position = mvp * vec4(pos, 1.0);
+	gl_Position = mvp * vec4(position, 1.0);
 }

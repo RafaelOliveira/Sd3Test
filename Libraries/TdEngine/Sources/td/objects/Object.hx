@@ -44,5 +44,8 @@ class Object extends Transform
 
 		// Bind state we want to draw with
 		g.setPipeline(material.pipeline);
+
+		g.setMatrix(material.modelMatrixId, matrix);
+		g.setMatrix(material.normalModelMatrixId, normalMatrix);
 	}
 }

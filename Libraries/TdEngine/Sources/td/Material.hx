@@ -25,7 +25,17 @@ class Material
 	/**
 	 * The sizes of the attributes, in order
 	 */	
-	public var structureSizes:Array<Int>;	
+	public var structureSizes:Array<Int>;
+
+	// uniforms
+
+	public var modelMatrixId:ConstantLocation;
+	public var normalModelMatrixId:ConstantLocation;
+	public var lightPositionId:ConstantLocation;
+	public var lightColorId:ConstantLocation;
+
+	// TODO: see if I can put back in TexMaterial
+	public var textureId:TextureUnit;
 	
 	public function new(vertexShader:VertexShader, fragmentShader:FragmentShader):Void
 	{
@@ -34,13 +44,19 @@ class Material
 		structureLength = 0;
 		structureSizes = new Array<Int>();
 		
-		bindAttribute('pos', VertexData.Float3);
+		bindAttribute('position', VertexData.Float3);
 
 		// Pipeline state
 		pipeline = new PipelineState();
 		pipeline.inputLayout = [structure];
 		
-		setShaders(vertexShader, fragmentShader);				
+		setShaders(vertexShader, fragmentShader);
+
+		// uniforms
+		modelMatrixId = getConstantLocation('model');
+		normalModelMatrixId = getConstantLocation('normalModel');
+		lightPositionId = getConstantLocation('lightPosition');
+		lightColorId = getConstantLocation('lightColor');
 	}	
 		
 	public function bindAttribute(name:String, vertexData:VertexData):Void
@@ -99,5 +115,5 @@ class Material
 	inline public function getConstantLocation(name:String):ConstantLocation
 	{
 		return pipeline.getConstantLocation(name);
-	}
+	}	
 }
