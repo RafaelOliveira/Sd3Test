@@ -11,8 +11,6 @@ class Plus3d extends TexObject
 
 		scale.multByScalar(0.7);
 		
-		position.x = x;
-		position.y = y;		
-		position.z = z;		
+		position.set(x, y, z);				
 	}
 }

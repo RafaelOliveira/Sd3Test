@@ -28,11 +28,16 @@ class Material
 	public var structureSizes:Array<Int>;
 
 	// uniforms
-
+	
 	public var modelMatrixId:ConstantLocation;
 	public var normalModelMatrixId:ConstantLocation;
+	public var materialShininessId:ConstantLocation;
+	public var materialSpecularColorId:ConstantLocation;
 	public var lightPositionId:ConstantLocation;
 	public var lightColorId:ConstantLocation;
+	public var lightAttenuationId:ConstantLocation;
+	public var lightAmbientCoefficientId:ConstantLocation;
+	public var cameraPositionId:ConstantLocation;
 
 	// TODO: see if I can put back in TexMaterial
 	public var textureId:TextureUnit;
@@ -55,8 +60,13 @@ class Material
 		// uniforms
 		modelMatrixId = getConstantLocation('model');
 		normalModelMatrixId = getConstantLocation('normalModel');
+		materialShininessId = getConstantLocation('materialShininess');	
+		materialSpecularColorId = getConstantLocation('materialSpecularColor');
 		lightPositionId = getConstantLocation('lightPosition');
 		lightColorId = getConstantLocation('lightColor');
+		lightAttenuationId = getConstantLocation("lightAttenuation");
+		lightAmbientCoefficientId = getConstantLocation('lightAmbientCoefficient');
+		cameraPositionId = getConstantLocation('cameraPosition');
 	}	
 		
 	public function bindAttribute(name:String, vertexData:VertexData):Void

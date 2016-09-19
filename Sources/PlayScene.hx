@@ -2,14 +2,17 @@ package;
 
 import td.Scene;
 import kha.Color;
+import kha.Assets;
 import td.input.Mouse;
 import td.input.Keyboard;
-import objects.GradBox;
-import objects.TexBox;
+import objects.Box;
 import objects.Plus3d;
 
 class PlayScene extends Scene
 {
+	var plus3d:Plus3d;
+	var box:Box;
+	
 	public function new():Void
 	{
 		super();		
@@ -24,33 +27,24 @@ class PlayScene extends Scene
 			[1, 1, 0, 1, 1]
 		];
 
-		/*for (z in 0...places.length)
+		for (z in 0...places.length)
 		{
 			for (x in 0...places[z].length)
 			{
 				if (places[z][x] != 0)
-				{
-					var r = Math.random();
-					var px = x * 2;
-					var pz = z * 2;
-
-					if (r < 0.5)
-						add(new GradBox(px, pz));
-					else
-						add(new TexBox(px, pz));
-				}
+					add(new Box(x * 2, z * 2));
 			}
-		}*/
+		}
 
-		var plus3d = new Plus3d(4, 0, 4);
-		add(plus3d);
+		//plus3d = new Plus3d(4, 0, 4);
+		//add(plus3d);		
 
-		setLight(4, 2, 8, Color.Red);
+		setLight(4, 2, 8, Color.White);
+		lightAmbient = 0.5;
+		bgImage = Assets.images.bg;
 		
-		camera.position.x = 5;
-		camera.position.y = 2;
-		camera.position.z = 10;
-		camera.horizontalAngle = 3.5;
+		camera.position.set(16, 5, 50);
+		//camera.horizontalAngle = 4;
 	}
 
 	override public function update():Void
@@ -58,18 +52,17 @@ class PlayScene extends Scene
 		super.update();
 
 		if (Mouse.isHeld())
-			camera.updateAngleByMouse(0.005, Mouse.dx, Mouse.dy);
-			
+			camera.updateAngleByMouse(0.005, Mouse.dx, Mouse.dy);			
 
 		if (Keyboard.isHeld('a'))			
-			camera.moveToLeft(0.05);
+			camera.moveToLeft(0.2);
 		else if (Keyboard.isHeld('d'))			
-			camera.moveToRight(0.05);
+			camera.moveToRight(0.2);
 		
 		if (Keyboard.isHeld('w'))			
-			camera.moveForward(0.1);
+			camera.moveForward(0.2);
 		else if (Keyboard.isHeld('s'))			
-			camera.moveBackward(0.1);
+			camera.moveBackward(0.2);
 
 		if (Keyboard.isHeld('left'))
 			light.position.x -= 0.3;
@@ -79,6 +72,8 @@ class PlayScene extends Scene
 		if (Keyboard.isHeld('up'))
 			light.position.z -= 0.3;
 		else if (Keyboard.isHeld('down'))
-			light.position.z += 0.3;		
+			light.position.z += 0.3;
+			
+		//plus3d.rotation.y += 3;
 	}
 }

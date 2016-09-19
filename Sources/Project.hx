@@ -4,7 +4,6 @@ import kha.Framebuffer;
 import kha.Scheduler;
 import kha.System;
 import kha.Assets;
-import kha.Color;
 import td.Engine;
 
 class Project 
@@ -31,14 +30,7 @@ class Project
 	}    
 
 	function render(fb:Framebuffer):Void 
-	{
-		var g = fb.g4;
-
-		g.begin();
-		g.clear(Color.Black);
-
-		engine.render(g);
-
-		g.end();
+	{				
+		engine.render(fb);		
 	}
 }

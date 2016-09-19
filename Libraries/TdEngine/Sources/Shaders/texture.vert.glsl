@@ -2,17 +2,22 @@
 precision highp float;
 #endif
 
-// Input vertex data, different for all executions of this shader
-attribute vec3 position;
-attribute vec2 textureCoord;
-
 uniform mat4 mvp;
 
-// Output data: will be interpolated for each fragment.
+attribute vec3 position;
+attribute vec2 textureCoord;
+attribute vec3 normal;
+
+varying vec3 vPosition;
 varying vec2 vTextureCoord;
+varying vec3 vNormal;
 
 void kore()
 {
+	// Pass some variables to the fragment shader
+	vPosition = position;
 	vTextureCoord = textureCoord;
-	gl_Position = mvp * vec4(position, 1.0);	
+    vNormal = normal;
+    	
+	gl_Position = mvp * vec4(position, 1.0);
 }

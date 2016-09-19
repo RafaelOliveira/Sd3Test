@@ -1,6 +1,7 @@
 package td;
 
-import kha.graphics4.Graphics;
+import kha.Canvas;
+import kha.System;
 import td.input.Keyboard;
 import td.input.Mouse;
 
@@ -13,8 +14,14 @@ class Engine
 	var sceneList:Map<String, Scene>;
 	var activeScene:Scene;
 	
+	public static var gameWidth:Int;
+	public static var gameHeight:Int;
+
 	public function new() 
 	{
+		gameWidth = System.windowWidth();
+		gameHeight = System.windowHeight();
+
 		keyboard = new Keyboard();
 		mouse = new Mouse();
 		camera = new Camera();
@@ -53,9 +60,9 @@ class Engine
 		mouse.postUpdate();
 	}
 	
-	public function render(g:Graphics):Void
+	public function render(canvas:Canvas):Void
 	{
 		if (activeScene != null)
-			activeScene.render(g);				
+			activeScene.render(canvas);				
 	}
 }

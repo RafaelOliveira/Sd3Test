@@ -58,10 +58,10 @@ class Transform
 	public function updateNormalMatrix():Void
 	{
 		var normalMat3 = getMatrix3().inverse().transpose();
-		normalMatrix = new FastMatrix4(normalMat3._00, normalMat3._10, normalMat3._20, 0,
-										normalMat3._01, normalMat3._11, normalMat3._21, 0,
-										normalMat3._02, normalMat3._12, normalMat3._22, 0,
-										0, 0, 0, 0);
+		normalMatrix = new FastMatrix4(normalMat3._00, normalMat3._10, normalMat3._20, 1,
+										normalMat3._01, normalMat3._11, normalMat3._21, 1,
+										normalMat3._02, normalMat3._12, normalMat3._22, 1,
+										1, 1, 1, 1);
 	}
 
 	public function updateDirections():Void

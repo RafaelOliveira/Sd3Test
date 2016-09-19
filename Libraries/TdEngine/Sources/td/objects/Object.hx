@@ -1,6 +1,8 @@
 package td.objects;
 
+import kha.Color;
 import kha.Shaders;
+import kha.FastFloat;
 import kha.graphics4.Graphics;
 
 class Object extends Transform
@@ -8,7 +10,10 @@ class Object extends Transform
 	public var model:Model;
 	public var material:Material;
 	public var camera:Camera;
-	public var scene:Scene;	
+	public var scene:Scene;
+
+	public var shininess:FastFloat;
+	public var specularColor:Color;
 
 	public function new(model:Model, material:Material):Void
 	{
@@ -24,6 +29,9 @@ class Object extends Transform
 			this.material = new Material(Shaders.simple_vert, Shaders.simple_frag);
 
 		camera = Camera.get();
+
+		shininess = 80.0;
+		specularColor = Color.White;
 	}
 
 	override public function update():Void

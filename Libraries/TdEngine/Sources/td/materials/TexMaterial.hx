@@ -7,7 +7,7 @@ class TexMaterial extends Material
 {
 	public function new():Void
 	{
-		super(Shaders.texture_pf_light_vert, Shaders.texture_pf_light_frag);
+		super(Shaders.texture_vert, Shaders.texture_frag);
 
 		bindAttribute('textureCoord', VertexData.Float2);
 		bindAttribute('normal', VertexData.Float3);
