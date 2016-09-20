@@ -36,7 +36,7 @@ class PlayScene extends Scene
 			}
 		}
 
-		//plus3d = new Plus3d(4, 0, 4);
+		//plus3d = new Plus3d(15, 0, 15);
 		//add(plus3d);		
 
 		setLight(4, 2, 8, Color.White);

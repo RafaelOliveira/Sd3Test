@@ -18,8 +18,7 @@ class Transform
 
 	public var matrix:FastMatrix4;
 	public var matrixDirty:Bool;
-
-	public var normalMatrix:FastMatrix4;
+	public var normalMatrix:FastMatrix4;	
 
 	public function new():Void
 	{
@@ -29,8 +28,7 @@ class Transform
 
 		updateDirections();
 
-		matrix = FastMatrix4.identity();
-		updateNormalMatrix();
+		matrix = FastMatrix4.identity();		
 		matrixDirty = false;		
 	}
 
@@ -50,7 +48,9 @@ class Transform
 			matrix = matrix.multmat(FastMatrix4.rotationZ(rotation.z));
 
 		matrix = matrix.multmat(FastMatrix4.translation(position.x, position.y, position.z));
-		updateNormalMatrix();		 
+
+		if (Engine.lightEnabled)
+			updateNormalMatrix();
 
 		matrixDirty = false;
 	}

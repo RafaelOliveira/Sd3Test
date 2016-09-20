@@ -17,20 +17,20 @@ class Project
 
 	function assetsLoaded():Void
 	{		
-		engine = new Engine();
-		engine.addScene('play', new PlayScene(), true); 		
+		engine = new Engine({ backbuffer: false, backbufferWidth: 200, backbufferHeight: 150, lights: false });
+		engine.addScene('play', new PlayScene(), true);
 
 		System.notifyOnRender(render);
 		Scheduler.addTimeTask(update, 0, 1 / 60);
 	}
 
-	function update():Void 
+	function update():Void
 	{
 		engine.update();		
-	}    
+	}
 
 	function render(fb:Framebuffer):Void 
 	{				
-		engine.render(fb);		
+		engine.render(fb);
 	}
 }

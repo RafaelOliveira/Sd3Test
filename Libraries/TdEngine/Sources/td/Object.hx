@@ -1,9 +1,10 @@
-package td.objects;
+package td;
 
 import kha.Color;
-import kha.Shaders;
+import kha.Image;
 import kha.FastFloat;
 import kha.graphics4.Graphics;
+import td.materials.Material;
 
 class Object extends Transform
 {
@@ -15,29 +16,30 @@ class Object extends Transform
 	public var shininess:FastFloat;
 	public var specularColor:Color;
 
-	public function new(model:Model, material:Material):Void
+	var image:Image;
+
+	public function new(model:Model, material:Material, image:Image):Void
 	{
 		super();
 
-		this.model = model;
-				
-		// Use the passed material, otherwise use
-		// a material with just a red color
-		if (material != null)
-			this.material = material;
-		else
-			this.material = new Material(Shaders.simple_vert, Shaders.simple_frag);
+		this.model = model;		
+		this.material = material;
 
 		camera = Camera.get();
 
 		shininess = 80.0;
 		specularColor = Color.White;
+
+		this.image = image;
+
+		if (Engine.lightEnabled)
+			updateNormalMatrix();
 	}
 
 	override public function update():Void
 	{
-		if (matrixDirty)		
-			updateMatrix(position.value, rotation.value, scale.value);		
+		if (matrixDirty)
+			updateMatrix(position.value, rotation.value, scale.value);
 	}
 
 	/**
@@ -54,6 +56,12 @@ class Object extends Transform
 		g.setPipeline(material.pipeline);
 
 		g.setMatrix(material.modelMatrixId, matrix);
-		g.setMatrix(material.normalModelMatrixId, normalMatrix);
+
+		// Set texture
+		if (image != null)
+			g.setTexture(material.textureId, image);
+
+		if (Engine.lightEnabled)
+			g.setMatrix(material.lightUniforms.normalModelMatrixId, normalMatrix);
 	}
 }

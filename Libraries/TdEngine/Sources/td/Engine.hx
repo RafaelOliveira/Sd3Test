@@ -1,9 +1,29 @@
 package td;
 
+import kha.Image;
+import kha.Color;
 import kha.Canvas;
 import kha.System;
+import kha.Scaler;
 import td.input.Keyboard;
 import td.input.Mouse;
+
+@:structInit
+class EngineOptions
+{
+	public var lights:Bool;
+	public var backbuffer:Bool;
+	public var backbufferWidth:Int;
+	public var backbufferHeight:Int;
+
+	public function new(lights:Bool = true, backbuffer:Bool = false, backbufferWidth:Int = 0, backbufferHeight:Int = 0):Void
+	{
+		this.lights = lights;
+		this.backbuffer = backbuffer;
+		this.backbufferWidth = backbufferWidth;
+		this.backbufferHeight = backbufferHeight;
+	}
+}
 
 class Engine
 {	
@@ -13,14 +33,41 @@ class Engine
 
 	var sceneList:Map<String, Scene>;
 	var activeScene:Scene;
+
+	var backbuffer:Image;
 	
+	public static var lightEnabled:Bool;
+
+	public static var windowWidth:Int;
+	public static var windowHeight:Int;
 	public static var gameWidth:Int;
 	public static var gameHeight:Int;
 
-	public function new() 
+	public function new(?option:EngineOptions) 
 	{
-		gameWidth = System.windowWidth();
-		gameHeight = System.windowHeight();
+		windowWidth = System.windowWidth();
+		windowHeight = System.windowHeight();
+
+		if (option != null)
+		{
+			lightEnabled = option.lights;
+
+			if (option.backbuffer)
+			{
+				gameWidth = option.backbufferWidth == 0 ? windowWidth : option.backbufferWidth;
+				gameHeight = option.backbufferHeight == 0 ? windowHeight : option.backbufferHeight;		
+
+				backbuffer = Image.createRenderTarget(gameWidth, gameHeight);
+			}
+		}
+		else		
+			lightEnabled = true;
+
+		if (backbuffer == null)
+		{
+			gameWidth = windowWidth;
+			gameHeight = windowHeight;
+		}		
 
 		keyboard = new Keyboard();
 		mouse = new Mouse();
@@ -63,6 +110,18 @@ class Engine
 	public function render(canvas:Canvas):Void
 	{
 		if (activeScene != null)
-			activeScene.render(canvas);				
+		{
+			if (backbuffer != null)
+			{
+				activeScene.render(backbuffer);
+
+				canvas.g2.begin(true, Color.Black);
+				//Scaler.scale(backbuffer, canvas, System.screenRotation);
+				canvas.g2.drawScaledSubImage(backbuffer, 0, 0, gameWidth, gameHeight, 0, 0, windowWidth, windowHeight);				
+				canvas.g2.end();
+			}
+			else
+				activeScene.render(canvas);
+		}					
 	}
 }

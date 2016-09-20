@@ -1,16 +1,14 @@
 package objects;
 
 import kha.Assets;
-import td.objects.TexObject;
+import td.Object;
 
-class Plus3d extends TexObject
+class Plus3d extends Object
 {
 	public function new(x:Float = 0, y:Float = 0, z:Float = 0):Void
 	{
-		super(Data.plus3dModel, Data.texMaterial, Assets.images.plus3d);
-
-		scale.multByScalar(0.7);
+		super(Data.plus3dModel, Data.material, Assets.images.plus3d);		
 		
-		position.set(x, y, z);				
+		position.set(x, y, z);
 	}
 }

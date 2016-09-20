@@ -5,7 +5,6 @@ import kha.Image;
 import kha.FastFloat;
 import kha.math.FastMatrix4;
 import kha.Canvas;
-import td.objects.Object;
 
 class Scene
 {
@@ -81,16 +80,8 @@ class Scene
 			// Send our transformation to the currently bound shader, in the "mvp" uniform
 			g.setMatrix(object.material.getConstantLocation('mvp'), mvp);
 
-			if (light != null)
-			{
-				g.setFloat(object.material.materialShininessId, object.shininess);
-				g.setFloat3(object.material.materialSpecularColorId, object.specularColor.R, object.specularColor.G, object.specularColor.B);
-				g.setFloat3(object.material.lightPositionId, light.position.x, light.position.y, light.position.z);
-				g.setFloat3(object.material.lightColorId, light.color.R, light.color.G, light.color.B);
-				g.setFloat(object.material.lightAttenuationId, light.attenuation);
-				g.setFloat(object.material.lightAmbientCoefficientId, lightAmbient);
-				g.setFloat3(object.material.cameraPositionId, camera.position.x, camera.position.y, camera.position.z);
-			}
+			if (Engine.lightEnabled && light != null)
+				object.material.lightUniforms.update(g, object.shininess, object.specularColor, light, lightAmbient, camera.position);			
 			
 			g.drawIndexedVertices();
 		}

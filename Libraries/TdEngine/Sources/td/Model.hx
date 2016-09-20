@@ -1,15 +1,18 @@
 package td;
 
+import kha.Blob;
 import kha.graphics4.VertexBuffer;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.Usage;
+import td.materials.Material;
+import td.loaders.ObjLoader;
 
 class Model
 {
 	public var vertexBuffer:VertexBuffer;
-	public var indexBuffer:IndexBuffer;	 
+	public var indexBuffer:IndexBuffer;
 		
-	public function new(material:Material, vertices:Array<Float>, indices:Array<Int>, ?otherData:Array<Array<Float>>):Void 
+	public function new(material:Material, vertices:Array<Float>, indices:Array<Int>, ?otherData:Array<Array<Float>>):Void
 	{
 		if (otherData != null)
 			setVertices(material, vertices, otherData);
@@ -20,8 +23,8 @@ class Model
 	}	
 
 	public function setVertices(material:Material, vertices:Array<Float>, ?otherData:Array<Array<Float>>):Void
-	{
-		var vertexCount = Std.int(vertices.length / 3); // Vertex count - 3 floats per vertex
+	{		
+		var vertexCount = Std.int(vertices.length / 3); // Vertex count - 3 floats per vertex 
 
 		// Create vertex buffer
 		vertexBuffer = new VertexBuffer(
@@ -80,5 +83,11 @@ class Model
 		for (i in 0...iData.length)
 			iData[i] = indices[i];		
 		indexBuffer.unlock();
-	}		
+	}
+
+	public static function load(material:Material, file:Blob):Model
+	{
+		var modelData = new ObjLoader(file.toString());
+		return new Model(material, modelData.data, modelData.indices);		
+	}
 }

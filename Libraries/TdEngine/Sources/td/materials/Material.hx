@@ -1,6 +1,7 @@
-package td;
+package td.materials;
 
 import kha.Shaders;
+import kha.graphics4.Graphics;
 import kha.graphics4.CompareMode;
 import kha.graphics4.CullMode;
 import kha.graphics4.PipelineState;
@@ -8,11 +9,13 @@ import kha.graphics4.VertexStructure;
 import kha.graphics4.VertexData;
 import kha.graphics4.VertexShader;
 import kha.graphics4.FragmentShader;
-import kha.graphics4.TextureUnit;
 import kha.graphics4.ConstantLocation;
+import kha.graphics4.TextureUnit;
 
 class Material
 {
+	static var cache:Map<String, Material>;
+
 	public var pipeline:PipelineState;	
 	/**
 	 * Structure that maintain the attributes
@@ -28,18 +31,10 @@ class Material
 	public var structureSizes:Array<Int>;
 
 	// uniforms
-	
 	public var modelMatrixId:ConstantLocation;
-	public var normalModelMatrixId:ConstantLocation;
-	public var materialShininessId:ConstantLocation;
-	public var materialSpecularColorId:ConstantLocation;
-	public var lightPositionId:ConstantLocation;
-	public var lightColorId:ConstantLocation;
-	public var lightAttenuationId:ConstantLocation;
-	public var lightAmbientCoefficientId:ConstantLocation;
-	public var cameraPositionId:ConstantLocation;
 
-	// TODO: see if I can put back in TexMaterial
+	public var lightUniforms:LightUniforms;	
+	
 	public var textureId:TextureUnit;
 	
 	public function new(vertexShader:VertexShader, fragmentShader:FragmentShader):Void
@@ -59,14 +54,9 @@ class Material
 
 		// uniforms
 		modelMatrixId = getConstantLocation('model');
-		normalModelMatrixId = getConstantLocation('normalModel');
-		materialShininessId = getConstantLocation('materialShininess');	
-		materialSpecularColorId = getConstantLocation('materialSpecularColor');
-		lightPositionId = getConstantLocation('lightPosition');
-		lightColorId = getConstantLocation('lightColor');
-		lightAttenuationId = getConstantLocation("lightAttenuation");
-		lightAmbientCoefficientId = getConstantLocation('lightAmbientCoefficient');
-		cameraPositionId = getConstantLocation('cameraPosition');
+
+		if (Engine.lightEnabled)
+			lightUniforms = new LightUniforms(pipeline);				
 	}	
 		
 	public function bindAttribute(name:String, vertexData:VertexData):Void
@@ -93,12 +83,7 @@ class Material
 
 			default:
 		}
-	}
-	
-	inline public function useSimpleShaders():Void
-	{
-		setShaders(Shaders.simple_vert, Shaders.simple_frag);
-	}
+	}	
 
 	public function setShaders(?vertexShader:VertexShader, ?fragmentShader:FragmentShader):Void
 	{
@@ -125,5 +110,41 @@ class Material
 	inline public function getConstantLocation(name:String):ConstantLocation
 	{
 		return pipeline.getConstantLocation(name);
-	}	
+	}
+
+	public static function get():Material
+	{		
+		var material:Material = null;
+
+		if (cache == null)		
+			cache = new Map<String, Material>();
+
+		if (Engine.lightEnabled)
+		{
+			material = cache.get('texture-light');
+			if (material == null)
+			{
+				material = new Material(Shaders.texture_light_vert, Shaders.texture_light_frag);
+				material.bindAttribute('textureCoord', VertexData.Float2);
+				material.bindAttribute('normal', VertexData.Float3);
+				material.textureId = material.getTextureUnit('textureSampler');
+
+				cache.set('texture-light', material);
+			}
+		}
+		else
+		{
+			material = cache.get('texture');
+			if (material == null)
+			{
+				material = new Material(Shaders.texture_vert, Shaders.texture_frag);
+				material.bindAttribute('textureCoord', VertexData.Float2);				
+				material.textureId = material.getTextureUnit('textureSampler');
+
+				cache.set('texture', material);
+			}
+		}
+			
+		return material;		
+	}
 }

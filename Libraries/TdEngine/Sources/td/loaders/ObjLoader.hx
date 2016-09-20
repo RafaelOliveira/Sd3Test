@@ -92,9 +92,13 @@ class ObjLoader {
 			data.push(indexedVertices[i * 3 + 2]);
 			data.push(indexedUVs[i * 2]);
 			data.push(1-indexedUVs[i * 2 + 1]);
-			data.push(indexedNormals[i * 3]);
-			data.push(indexedNormals[i * 3 + 1]);
-			data.push(indexedNormals[i * 3 + 2]);
+			
+			if (Engine.lightEnabled)
+			{
+				data.push(indexedNormals[i * 3]);
+				data.push(indexedNormals[i * 3 + 1]);
+				data.push(indexedNormals[i * 3 + 2]);
+			}			
 		}
 	}
 
