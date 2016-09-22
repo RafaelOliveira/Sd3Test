@@ -5,6 +5,7 @@ import kha.Color;
 import kha.Assets;
 import td.input.Mouse;
 import td.input.Keyboard;
+import td.Light;
 import objects.Box;
 import objects.Plus3d;
 
@@ -39,9 +40,13 @@ class PlayScene extends Scene
 		//plus3d = new Plus3d(15, 0, 15);
 		//add(plus3d);		
 
-		setLight(4, 2, 8, Color.White);
+		var light = Light.fromXYZ(4, 2, 8, Color.White);
+		light.isDirectional = true;
+		addLight(light);
+
 		lightAmbient = 0.5;
-		bgImage = Assets.images.bg;
+		//bgImage = Assets.images.bg;
+		bgColor = 0xff4da6ff;
 		
 		camera.position.set(16, 5, 50);
 		//camera.horizontalAngle = 4;
@@ -64,7 +69,7 @@ class PlayScene extends Scene
 		else if (Keyboard.isHeld('s'))			
 			camera.moveBackward(0.2);
 
-		if (Keyboard.isHeld('left'))
+		/*if (Keyboard.isHeld('left'))
 			light.position.x -= 0.3;
 		else if (Keyboard.isHeld('right'))
 			light.position.x += 0.3;
@@ -72,7 +77,7 @@ class PlayScene extends Scene
 		if (Keyboard.isHeld('up'))
 			light.position.z -= 0.3;
 		else if (Keyboard.isHeld('down'))
-			light.position.z += 0.3;
+			light.position.z += 0.3;*/
 			
 		//plus3d.rotation.y += 3;
 	}

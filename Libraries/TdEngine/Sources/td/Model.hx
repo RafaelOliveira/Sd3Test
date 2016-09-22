@@ -1,6 +1,7 @@
 package td;
 
 import kha.Blob;
+import kha.math.FastVector3;
 import kha.graphics4.VertexBuffer;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.Usage;
@@ -11,6 +12,7 @@ class Model
 {
 	public var vertexBuffer:VertexBuffer;
 	public var indexBuffer:IndexBuffer;
+	public var size:FastVector3;	
 		
 	public function new(material:Material, vertices:Array<Float>, indices:Array<Int>, ?otherData:Array<Array<Float>>):Void
 	{
@@ -20,6 +22,7 @@ class Model
 			setVertices(material, vertices);
 			
 		setIndices(indices);
+		size = new FastVector3();
 	}	
 
 	public function setVertices(material:Material, vertices:Array<Float>, ?otherData:Array<Array<Float>>):Void
@@ -88,6 +91,9 @@ class Model
 	public static function load(material:Material, file:Blob):Model
 	{
 		var modelData = new ObjLoader(file.toString());
-		return new Model(material, modelData.data, modelData.indices);		
+		var model = new Model(material, modelData.data, modelData.indices);
+		model.size = modelData.size;
+
+		return model;
 	}
 }

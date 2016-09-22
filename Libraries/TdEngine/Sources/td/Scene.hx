@@ -10,18 +10,21 @@ class Scene
 {
 	public var objects:Array<Object>;
 	var camera:Camera;
-	var light:Light;
 
+	var lights:Array<Light>;
 	var lightAmbient:FastFloat;
+
 	var bgColor:Color;
 	var bgImage:Image;
 
 	public function new():Void
 	{
-		camera = Camera.get();
 		objects = new Array<Object>();
+		camera = Camera.get();		
 
+		lights = new Array<Light>();
 		lightAmbient = 0.005;
+
 		bgColor = Color.Black;
 	}
 
@@ -43,14 +46,14 @@ class Scene
 		objects.remove(object);
 	}
 
-	public function setLight(x:FastFloat, y:FastFloat, z:FastFloat, ?color:Color):Void
-	{
-		light = Light.fromXYZ(x, y, z, color);
+	public function addLight(light:Light):Void
+	{		
+		lights.push(light);		
 	}
 
-	public function removeLight():Void
+	public function removeLight(light:Light):Void
 	{
-		light = null;
+		lights.remove(light);
 	}
 
 	public inline function render(canvas:Canvas):Void
@@ -61,12 +64,12 @@ class Scene
 		{
 			canvas.g2.begin(false);
 			canvas.g2.drawScaledSubImage(bgImage, 0, 0, bgImage.width, bgImage.height, 0, 0, Engine.gameWidth, Engine.gameHeight);
-			canvas.g2.end();
+			canvas.g2.end();			
 		}
 		else
 		{
 			g.begin();
-			g.clear(bgColor);
+			g.clear(bgColor, 1);
 		}
 		
 		for (object in objects)
@@ -80,8 +83,8 @@ class Scene
 			// Send our transformation to the currently bound shader, in the "mvp" uniform
 			g.setMatrix(object.material.getConstantLocation('mvp'), mvp);
 
-			if (Engine.lightEnabled && light != null)
-				object.material.lightUniforms.update(g, object.shininess, object.specularColor, light, lightAmbient, camera.position);			
+			if (Engine.lightEnabled && lights.length > 0)
+				object.material.lightUniforms.update(g, object.shininess, object.specularColor, lights, lightAmbient, camera.position);			
 			
 			g.drawIndexedVertices();
 		}

@@ -22,7 +22,7 @@ class Object extends Transform
 	{
 		super();
 
-		this.model = model;		
+		this.model = model;
 		this.material = material;
 
 		camera = Camera.get();

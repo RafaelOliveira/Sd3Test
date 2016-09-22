@@ -1,5 +1,7 @@
 package td.loaders;
 
+import kha.math.FastVector3;
+
 class ObjLoader {
 
 	static var indexedVertices:Array<Float>;
@@ -9,6 +11,8 @@ class ObjLoader {
 
 	public var data:Array<Float>;
 	public var indices:Array<Int>;
+
+	public var size:FastVector3;	
 
 	public function new(objData:String) {
 
@@ -86,10 +90,33 @@ class ObjLoader {
 		build(vertices, uvs, normals);
 
 		data = [];
+		var x1 = 0.0;
+		var x2 = 0.0;
+		var y1 = 0.0;
+		var y2 = 0.0;
+		var z1 = 0.0;
+		var z2 = 0.0;
+
 		for (i in 0...Std.int(vertices.length / 3)) {
 			data.push(indexedVertices[i * 3]);
 			data.push(indexedVertices[i * 3 + 1]);
 			data.push(indexedVertices[i * 3 + 2]);
+			
+			if (indexedVertices[i * 3] < x1)
+				x1 = indexedVertices[i * 3];
+			else if (indexedVertices[i * 3] > x2)
+				x2 = indexedVertices[i * 3];
+
+			if (indexedVertices[i * 3 + 1] < y1)
+				y1 = indexedVertices[i * 3 + 1];
+			else if (indexedVertices[i * 3 + 1] > y2)
+				y2 = indexedVertices[i * 3 + 1];
+
+			if (indexedVertices[i * 3 + 2] < z1)
+				z1 = indexedVertices[i * 3 + 2];
+			else if (indexedVertices[i * 3 + 2] > z2)
+				z2 = indexedVertices[i * 3 + 2];	
+			
 			data.push(indexedUVs[i * 2]);
 			data.push(1-indexedUVs[i * 2 + 1]);
 			
@@ -100,6 +127,8 @@ class ObjLoader {
 				data.push(indexedNormals[i * 3 + 2]);
 			}			
 		}
+
+		size = new FastVector3(x2 - x1, y2 - y1, z2 - z1);		
 	}
 
 	function build(vertices:Array<Float>, uvs:Array<Float>, normals:Array<Float>) {
