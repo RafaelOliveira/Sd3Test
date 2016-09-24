@@ -55,7 +55,7 @@ class Material
 		// uniforms
 		modelMatrixId = getConstantLocation('model');
 
-		if (Engine.lightEnabled)
+		if (Engine.lightLevel > 0)
 			lightUniforms = new LightUniforms(pipeline);				
 	}	
 		
@@ -115,13 +115,16 @@ class Material
 	public static function get():Material
 	{		
 		var material:Material = null;
+		var materialName:String;
 
 		if (cache == null)		
 			cache = new Map<String, Material>();
 
-		if (Engine.lightEnabled)
+		if (Engine.lightLevel == 2)
 		{
-			material = cache.get('texture-light');
+			materialName = 'texture-normal-light';
+			material = cache.get(materialName);
+			
 			if (material == null)
 			{
 				material = new Material(Shaders.texture_normal_light_vert, Shaders.texture_normal_light_frag);
@@ -129,19 +132,36 @@ class Material
 				material.bindAttribute('normal', VertexData.Float3);
 				material.textureId = material.getTextureUnit('textureSampler');
 
-				cache.set('texture-light', material);
+				cache.set(materialName, material);
+			}
+		}
+		else if (Engine.lightLevel == 1)
+		{
+			materialName = 'texture-basic-light';
+			material = cache.get(materialName);
+			
+			if (material == null)
+			{
+				material = new Material(Shaders.texture_normal_light_vert, Shaders.texture_normal_light_frag);
+				material.bindAttribute('textureCoord', VertexData.Float2);
+				material.bindAttribute('normal', VertexData.Float3);
+				material.textureId = material.getTextureUnit('textureSampler');
+
+				cache.set(materialName, material);
 			}
 		}
 		else
 		{
-			material = cache.get('texture');
+			materialName = 'texture-no-light';
+			material = cache.get(materialName);
+			
 			if (material == null)
 			{
 				material = new Material(Shaders.texture_no_light_vert, Shaders.texture_no_light_frag);
 				material.bindAttribute('textureCoord', VertexData.Float2);				
 				material.textureId = material.getTextureUnit('textureSampler');
 
-				cache.set('texture', material);
+				cache.set(materialName, material);
 			}
 		}
 			

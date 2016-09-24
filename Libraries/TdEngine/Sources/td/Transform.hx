@@ -50,7 +50,7 @@ class Transform
 
 		matrix = matrix.multmat(FastMatrix4.scale(scale.x, scale.y, scale.z));		
 
-		if (Engine.lightEnabled)
+		if (Engine.lightLevel > 0)
 			updateNormalMatrix();
 
 		matrixDirty = false;

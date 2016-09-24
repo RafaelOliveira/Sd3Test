@@ -17,7 +17,7 @@ class Project
 
 	function assetsLoaded():Void
 	{		
-		engine = new Engine({ backbuffer: false, backbufferWidth: 800, backbufferHeight: 600, lights: true });
+		engine = new Engine({ backbuffer: false, backbufferWidth: 800, backbufferHeight: 600, lightLevel: 2 });
 		engine.addScene('play', new PlayScene(), true);
 
 		System.notifyOnRender(render);

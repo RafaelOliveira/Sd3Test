@@ -120,7 +120,7 @@ class ObjLoader {
 			data.push(indexedUVs[i * 2]);
 			data.push(1-indexedUVs[i * 2 + 1]);
 			
-			if (Engine.lightEnabled)
+			if (Engine.lightLevel > 0)
 			{
 				data.push(indexedNormals[i * 3]);
 				data.push(indexedNormals[i * 3 + 1]);

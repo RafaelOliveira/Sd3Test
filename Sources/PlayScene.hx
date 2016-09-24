@@ -8,11 +8,9 @@ import td.input.Keyboard;
 import td.Light;
 import td.collision.RectCollision;
 import objects.Box;
-import objects.Plus3d;
 
 class PlayScene extends Scene
-{
-	var plus3d:Plus3d;
+{	
 	var box:Box;
 	var light:Light;
 
@@ -39,10 +37,7 @@ class PlayScene extends Scene
 				if (places[z][x] != 0)
 					add(new Box(x * 2, z * 2));
 			}
-		}
-
-		//plus3d = new Plus3d(15, 0, 15);
-		//add(plus3d);		
+		}		
 
 		var sun = Light.fromXYZ(4, 2, 8, Color.White);
 		sun.isDirectional = true;		
@@ -54,7 +49,7 @@ class PlayScene extends Scene
 
 		//lightAmbient = 0.5;
 		bgImage = Assets.images.bg;
-		//bgColor = 0xff4da6ff;
+		bgColor = 0xff4da6ff;
 		
 		camera.position.set(3.5, 0, 15);
 		//camera.horizontalAngle = 4;

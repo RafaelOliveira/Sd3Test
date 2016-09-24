@@ -86,7 +86,7 @@ class Scene
 			// Send our transformation to the currently bound shader, in the "mvp" uniform
 			g.setMatrix(object.material.getConstantLocation('mvp'), mvp);
 
-			if (Engine.lightEnabled && lights.length > 0)
+			if (Engine.lightLevel > 0 && lights.length > 0)
 				object.material.lightUniforms.update(g, object.shininess, object.specularColor, lights, lightAmbient, camera.position);			
 			
 			g.drawIndexedVertices();

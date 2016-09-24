@@ -32,7 +32,7 @@ class Object extends Transform
 
 		this.image = image;
 
-		if (Engine.lightEnabled)
+		if (Engine.lightLevel > 0)
 			updateNormalMatrix();
 	}
 
@@ -64,7 +64,7 @@ class Object extends Transform
 		if (image != null)
 			g.setTexture(material.textureId, image);
 
-		if (Engine.lightEnabled)
+		if (Engine.lightLevel > 0)
 			g.setMatrix(material.lightUniforms.normalModelMatrixId, normalMatrix);
 	}
 }

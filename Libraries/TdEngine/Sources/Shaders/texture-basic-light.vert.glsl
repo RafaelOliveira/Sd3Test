@@ -1,9 +1,10 @@
 #ifdef GL_ES
-precision mediump float;
+precision highp float;
 #endif
 
 #define MAX_LIGHTS 10
 
+uniform mat4 mvp;
 uniform mat4 model;
 uniform mat4 normalModel;
 uniform vec3 cameraPosition;
@@ -21,9 +22,11 @@ uniform float lightAttenuation[MAX_LIGHTS];
 uniform float lightConeAngle[MAX_LIGHTS];
 uniform vec3 lightConeDirection[MAX_LIGHTS];
 
-varying vec3 vPosition;
-varying vec2 vTextureCoord;
-varying vec3 vNormal;
+attribute vec3 position;
+attribute vec2 textureCoord;
+attribute vec3 normal;
+
+varying vec4 vLinearColor;
 
 vec3 ApplyLight(vec4 lightPositionProp, vec3 lightColorProp, float lightAmbientProp, float lightAttenuationProp, float lightConeAngleProp, vec3 lightConeDirectionProp,
     vec3 surfaceColor, vec3 normal, vec3 surfacePos, vec3 surfaceToCamera) 
@@ -70,9 +73,9 @@ vec3 ApplyLight(vec4 lightPositionProp, vec3 lightColorProp, float lightAmbientP
 
 void kore()
 {
-    vec3 normal = normalize(mat3(normalModel) * vNormal);   
-    vec3 surfacePosition = vec3(model * vec4(vPosition, 1.0));
-    vec4 surfaceColor = texture2D(textureSampler, vTextureCoord);    
+	vec3 vNormal = normalize(mat3(normalModel) * normal);   
+    vec3 surfacePosition = vec3(model * vec4(position, 1.0));
+    vec4 surfaceColor = texture2D(textureSampler, textureCoord);    
     vec3 surfaceToCamera = normalize(cameraPosition - surfacePosition);
 
     //combine color from all the lights
@@ -94,12 +97,9 @@ void kore()
         linearColor += ApplyLight(lightPosition[4], lightColor[4], lightAmbient[4], lightAttenuation[4], lightConeAngle[4], lightConeDirection[4], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
 
     if (5 < numLights)    
-        linearColor += ApplyLight(lightPosition[5], lightColor[5], lightAmbient[5], lightAttenuation[5], lightConeAngle[5], lightConeDirection[5], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);    
-
-    //final color (after gamma correction)
-    
-    //vec3 gamma = vec3(1.0 / 2.2);
-    //gl_FragColor = vec4(pow(linearColor, gamma), surfaceColor.a);
-    
-    gl_FragColor = vec4(linearColor, surfaceColor.a);    
+        linearColor += ApplyLight(lightPosition[5], lightColor[5], lightAmbient[5], lightAttenuation[5], lightConeAngle[5], lightConeDirection[5], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
+	
+	vLinearColor = vec4(linearColor, surfaceColor.a);    
+    	
+	gl_Position = mvp * vec4(position, 1.0);
 }

@@ -11,14 +11,14 @@ import td.input.Mouse;
 @:structInit
 class EngineOptions
 {
-	public var lights:Bool;
+	public var lightLevel:Int;
 	public var backbuffer:Bool;
 	public var backbufferWidth:Int;
 	public var backbufferHeight:Int;
 
-	public function new(lights:Bool = true, backbuffer:Bool = false, backbufferWidth:Int = 0, backbufferHeight:Int = 0):Void
+	public function new(lightLevel:Int = 2, backbuffer:Bool = false, backbufferWidth:Int = 0, backbufferHeight:Int = 0):Void
 	{
-		this.lights = lights;
+		this.lightLevel = lightLevel;
 		this.backbuffer = backbuffer;
 		this.backbufferWidth = backbufferWidth;
 		this.backbufferHeight = backbufferHeight;
@@ -36,12 +36,12 @@ class Engine
 
 	var backbuffer:Image;
 	
-	public static var lightEnabled:Bool;
-
 	public static var windowWidth:Int;
 	public static var windowHeight:Int;
 	public static var gameWidth:Int;
 	public static var gameHeight:Int;
+	
+	public static var lightLevel:Int;
 
 	public function new(?option:EngineOptions) 
 	{
@@ -50,7 +50,7 @@ class Engine
 
 		if (option != null)
 		{
-			lightEnabled = option.lights;
+			lightLevel = option.lightLevel;
 
 			if (option.backbuffer)
 			{
@@ -61,7 +61,7 @@ class Engine
 			}
 		}
 		else		
-			lightEnabled = true;
+			lightLevel = 2;
 
 		if (backbuffer == null)
 		{
