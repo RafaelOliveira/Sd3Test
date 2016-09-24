@@ -36,8 +36,9 @@ class Transform
 
 	public function updateMatrix(position:FastVector3, rotation:FastVector3, scale:FastVector3):Void
 	{
-		matrix = matrix.multmat(FastMatrix4.scale(scale.x, scale.y, scale.z));
-		
+		matrix = FastMatrix4.identity();
+		matrix = matrix.multmat(FastMatrix4.translation(position.x, position.y, position.z));
+
 		if (rotation.x != 1)
 			matrix = matrix.multmat(FastMatrix4.rotationX(rotation.x));
 
@@ -47,7 +48,7 @@ class Transform
 		if (rotation.z != 1)
 			matrix = matrix.multmat(FastMatrix4.rotationZ(rotation.z));
 
-		matrix = matrix.multmat(FastMatrix4.translation(position.x, position.y, position.z));
+		matrix = matrix.multmat(FastMatrix4.scale(scale.x, scale.y, scale.z));		
 
 		if (Engine.lightEnabled)
 			updateNormalMatrix();
@@ -105,7 +106,7 @@ class Transform
 	public function moveToRight(value:FastFloat):Void 
 	{
 		var v = rightDirection.mult(value);
-		position.value = position.value.add(v);		
+		position.value = position.value.add(v);
 	}
 
 	/**

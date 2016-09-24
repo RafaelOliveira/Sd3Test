@@ -13,10 +13,11 @@ uniform float materialShininess;
 uniform vec3 materialSpecularColor;
 
 uniform int numLights;
-uniform float lightAmbientCoefficient;
+//uniform float lightAmbientCoefficient;
 
 uniform vec4 lightPosition[MAX_LIGHTS];
 uniform vec3 lightColor[MAX_LIGHTS];
+uniform float lightAmbient[MAX_LIGHTS];
 uniform float lightAttenuation[MAX_LIGHTS];
 uniform float lightConeAngle[MAX_LIGHTS];
 uniform vec3 lightConeDirection[MAX_LIGHTS];
@@ -25,7 +26,7 @@ varying vec3 vPosition;
 varying vec2 vTextureCoord;
 varying vec3 vNormal;
 
-vec3 ApplyLight(vec4 lightPositionProp, vec3 lightColorProp, float lightAttenuationProp, float lightConeAngleProp, vec3 lightConeDirectionProp,
+vec3 ApplyLight(vec4 lightPositionProp, vec3 lightColorProp, float lightAmbientProp, float lightAttenuationProp, float lightConeAngleProp, vec3 lightConeDirectionProp,
     vec3 surfaceColor, vec3 normal, vec3 surfacePos, vec3 surfaceToCamera) 
 {
     vec3 surfaceToLight;
@@ -52,7 +53,7 @@ vec3 ApplyLight(vec4 lightPositionProp, vec3 lightColorProp, float lightAttenuat
     }
 
     //ambient
-    vec3 ambient = lightAmbientCoefficient * surfaceColor.rgb * lightColorProp;
+    vec3 ambient = lightAmbientProp * surfaceColor.rgb * lightColorProp;
 
     //diffuse
     float diffuseCoefficient = max(0.0, dot(normal, surfaceToLight));
@@ -79,22 +80,22 @@ void kore()
     vec3 linearColor = vec3(0);    
     
     if (0 < numLights)
-        linearColor += ApplyLight(lightPosition[0], lightColor[0], lightAttenuation[0], lightConeAngle[0], lightConeDirection[0], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
+        linearColor += ApplyLight(lightPosition[0], lightColor[0], lightAmbient[0], lightAttenuation[0], lightConeAngle[0], lightConeDirection[0], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
             
     if (1 < numLights)    
-        linearColor += ApplyLight(lightPosition[1], lightColor[1], lightAttenuation[1], lightConeAngle[1], lightConeDirection[1], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
+        linearColor += ApplyLight(lightPosition[1], lightColor[1], lightAmbient[1], lightAttenuation[1], lightConeAngle[1], lightConeDirection[1], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
 
     if (2 < numLights)
-        linearColor += ApplyLight(lightPosition[2], lightColor[2], lightAttenuation[2], lightConeAngle[2], lightConeDirection[2], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
+        linearColor += ApplyLight(lightPosition[2], lightColor[2], lightAmbient[2], lightAttenuation[2], lightConeAngle[2], lightConeDirection[2], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
 
     if (3 < numLights)    
-        linearColor += ApplyLight(lightPosition[3], lightColor[3], lightAttenuation[3], lightConeAngle[3], lightConeDirection[3], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
+        linearColor += ApplyLight(lightPosition[3], lightColor[3], lightAmbient[3], lightAttenuation[3], lightConeAngle[3], lightConeDirection[3], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
         
     if (4 < numLights)
-        linearColor += ApplyLight(lightPosition[4], lightColor[4], lightAttenuation[4], lightConeAngle[4], lightConeDirection[4], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
+        linearColor += ApplyLight(lightPosition[4], lightColor[4], lightAmbient[4], lightAttenuation[4], lightConeAngle[4], lightConeDirection[4], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);
 
     if (5 < numLights)    
-        linearColor += ApplyLight(lightPosition[5], lightColor[5], lightAttenuation[5], lightConeAngle[5], lightConeDirection[5], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);    
+        linearColor += ApplyLight(lightPosition[5], lightColor[5], lightAmbient[5], lightAttenuation[5], lightConeAngle[5], lightConeDirection[5], surfaceColor.rgb, normal, surfacePosition, surfaceToCamera);    
 
     //final color (after gamma correction)
     

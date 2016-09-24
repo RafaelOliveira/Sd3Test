@@ -124,7 +124,7 @@ class Material
 			material = cache.get('texture-light');
 			if (material == null)
 			{
-				material = new Material(Shaders.texture_light_vert, Shaders.texture_light_frag);
+				material = new Material(Shaders.texture_normal_light_vert, Shaders.texture_normal_light_frag);
 				material.bindAttribute('textureCoord', VertexData.Float2);
 				material.bindAttribute('normal', VertexData.Float3);
 				material.textureId = material.getTextureUnit('textureSampler');
@@ -137,7 +137,7 @@ class Material
 			material = cache.get('texture');
 			if (material == null)
 			{
-				material = new Material(Shaders.texture_vert, Shaders.texture_frag);
+				material = new Material(Shaders.texture_no_light_vert, Shaders.texture_no_light_frag);
 				material.bindAttribute('textureCoord', VertexData.Float2);				
 				material.textureId = material.getTextureUnit('textureSampler');
 

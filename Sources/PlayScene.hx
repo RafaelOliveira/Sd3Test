@@ -6,6 +6,7 @@ import kha.Assets;
 import td.input.Mouse;
 import td.input.Keyboard;
 import td.Light;
+import td.collision.RectCollision;
 import objects.Box;
 import objects.Plus3d;
 
@@ -13,7 +14,10 @@ class PlayScene extends Scene
 {
 	var plus3d:Plus3d;
 	var box:Box;
-	
+	var light:Light;
+
+	var collision:RectCollision;	
+
 	public function new():Void
 	{
 		super();		
@@ -40,16 +44,24 @@ class PlayScene extends Scene
 		//plus3d = new Plus3d(15, 0, 15);
 		//add(plus3d);		
 
-		var light = Light.fromXYZ(4, 2, 8, Color.White);
-		light.isDirectional = true;
+		var sun = Light.fromXYZ(4, 2, 8, Color.White);
+		sun.isDirectional = true;		
+		addLight(sun);
+
+		light = Light.fromXYZ(3.5, 0, 3.5, Color.Red);
+		light.ambient = 0.7;
 		addLight(light);
 
-		lightAmbient = 0.5;
-		//bgImage = Assets.images.bg;
-		bgColor = 0xff4da6ff;
+		//lightAmbient = 0.5;
+		bgImage = Assets.images.bg;
+		//bgColor = 0xff4da6ff;
 		
-		camera.position.set(16, 5, 50);
+		camera.position.set(3.5, 0, 15);
 		//camera.horizontalAngle = 4;
+
+		box = cast this.objects[8];
+
+		collision = RectCollision.set(this);
 	}
 
 	override public function update():Void
@@ -65,20 +77,23 @@ class PlayScene extends Scene
 			camera.moveToRight(0.2);
 		
 		if (Keyboard.isHeld('w'))			
-			camera.moveForward(0.2);
+			camera.moveForward(0.2);			
 		else if (Keyboard.isHeld('s'))			
 			camera.moveBackward(0.2);
 
 		/*if (Keyboard.isHeld('left'))
-			light.position.x -= 0.3;
+			box.position.x -= 0.02;
 		else if (Keyboard.isHeld('right'))
-			light.position.x += 0.3;
+			box.position.x += 0.02;
 
 		if (Keyboard.isHeld('up'))
-			light.position.z -= 0.3;
+			box.position.z -= 0.02;
 		else if (Keyboard.isHeld('down'))
-			light.position.z += 0.3;*/
-			
-		//plus3d.rotation.y += 3;
+			box.position.z += 0.02;*/
+
+		collision.separateArea(camera.position, 1, 1);		
+					
+		box.rotation.x += 0.02;
+		box.rotation.y += 0.02;
 	}
 }

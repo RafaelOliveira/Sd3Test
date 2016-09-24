@@ -39,7 +39,10 @@ class Object extends Transform
 	override public function update():Void
 	{
 		if (matrixDirty)
+		{
+			updateDirections();
 			updateMatrix(position.value, rotation.value, scale.value);
+		}			
 	}
 
 	/**

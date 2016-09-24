@@ -62,12 +62,15 @@ class Scene
 
 		if (bgImage != null)
 		{
-			canvas.g2.begin(false);
+			canvas.g2.begin(true, Color.Black);
 			canvas.g2.drawScaledSubImage(bgImage, 0, 0, bgImage.width, bgImage.height, 0, 0, Engine.gameWidth, Engine.gameHeight);
-			canvas.g2.end();			
+			canvas.g2.end();
+			
+			g.begin();			
+			g.clear(null, 1);			
 		}
 		else
-		{
+		{			
 			g.begin();
 			g.clear(bgColor, 1);
 		}

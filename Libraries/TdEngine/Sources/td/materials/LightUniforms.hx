@@ -30,7 +30,7 @@ class LightUniforms
 		
 		cameraPositionId = pipeline.getConstantLocation('cameraPosition');
 
-		lightAmbientCoefficientId = pipeline.getConstantLocation('lightAmbientCoefficient');
+		//lightAmbientCoefficientId = pipeline.getConstantLocation('lightAmbientCoefficient');
 		numLightsId = pipeline.getConstantLocation('numLights');		
 
 		lightIds = new Array<ConstantLocation>();
@@ -38,6 +38,7 @@ class LightUniforms
 		{
 			lightIds.push(pipeline.getConstantLocation('lightPosition[' + i + ']'));
 			lightIds.push(pipeline.getConstantLocation('lightColor[' + i + ']'));
+			lightIds.push(pipeline.getConstantLocation('lightAmbient[' + i + ']'));
 			lightIds.push(pipeline.getConstantLocation('lightAttenuation[' + i + ']'));
 			lightIds.push(pipeline.getConstantLocation('lightConeAngle[' + i + ']'));
 			lightIds.push(pipeline.getConstantLocation('lightConeDirection[' + i + ']'));
@@ -50,7 +51,7 @@ class LightUniforms
 		g.setFloat3(materialSpecularColorId, objectSpecularColor.R, objectSpecularColor.G, objectSpecularColor.B);		
 		g.setVector3(cameraPositionId, cameraPosition.value);
 		
-		g.setFloat(lightAmbientCoefficientId, lightAmbient);
+		//g.setFloat(lightAmbientCoefficientId, lightAmbient);
 		g.setInt(numLightsId, lights.length);
 		
 		var i = 0;
@@ -58,10 +59,11 @@ class LightUniforms
 		{
 			g.setVector4(lightIds[i], lights[i].position);
 			g.setVector3(lightIds[i + 1], new FastVector3(lights[i].color.R, lights[i].color.G, lights[i].color.B));
-			g.setFloat  (lightIds[i + 2], lights[i].attenuation);
-			g.setFloat  (lightIds[i + 3], lights[i].coneAngle);
-			g.setVector3(lightIds[i + 4], lights[i].coneDirection);
-			i++;
+			g.setFloat	(lightIds[i + 2], lights[i].ambient);
+			g.setFloat  (lightIds[i + 3], lights[i].attenuation);
+			g.setFloat  (lightIds[i + 4], lights[i].coneAngle);
+			g.setVector3(lightIds[i + 5], lights[i].coneDirection);
+			i += 5;
 		}
 	}
 }

@@ -9,7 +9,7 @@ class Box extends Object
 	{
 		super(Data.boxModel, Data.material, Assets.images.box);
 		
-		scale.set(4, 4, 4);
+		//scale.set(4, 4, 4);
 		position.set(x, 0, z);
 	}
 }
