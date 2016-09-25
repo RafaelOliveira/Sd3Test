@@ -1,0 +1,3 @@
+[submodule "Libraries/Sd3"]
+	path = Libraries/Sd3
+	url = https://github.com/RafaelOliveira/Sd3

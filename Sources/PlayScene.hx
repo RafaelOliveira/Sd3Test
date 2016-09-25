@@ -1,12 +1,12 @@
 package;
 
-import td.Scene;
+import sd3.Scene;
 import kha.Color;
 import kha.Assets;
-import td.input.Mouse;
-import td.input.Keyboard;
-import td.Light;
-import td.collision.RectCollision;
+import sd3.input.Mouse;
+import sd3.input.Keyboard;
+import sd3.Light;
+import sd3.collision.RectCollision;
 import objects.Box;
 
 class PlayScene extends Scene

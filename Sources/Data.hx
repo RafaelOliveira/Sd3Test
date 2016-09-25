@@ -1,8 +1,8 @@
 package;
 
 import kha.Assets;
-import td.Model;
-import td.materials.Material;
+import sd3.Model;
+import sd3.materials.Material;
 
 class Data
 {		

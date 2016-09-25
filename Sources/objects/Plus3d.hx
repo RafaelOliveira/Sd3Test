@@ -1,7 +1,7 @@
 package objects;
 
 import kha.Assets;
-import td.Object;
+import sd3.Object;
 
 class Plus3d extends Object
 {
