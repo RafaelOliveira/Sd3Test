@@ -7,9 +7,8 @@ class Box extends Object
 {
 	public function new(x:Float, z:Float):Void
 	{
-		super(Data.boxModel, Data.material, Assets.images.box);
-		
-		//scale.set(4, 4, 4);
+		super('box', Assets.images.box);
+				
 		position.set(x, 0, z);
 	}
 }
