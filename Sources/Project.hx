@@ -17,20 +17,10 @@ class Project
 
 	function assetsLoaded():Void
 	{		
-		engine = new Engine();
+		engine = new Engine({ lightLevel: 3 });
 		engine.addScene('play', new PlayScene(), true);
 
-		System.notifyOnRender(render);
-		Scheduler.addTimeTask(update, 0, 1 / 60);
-	}
-
-	function update():Void
-	{
-		engine.update();		
-	}
-
-	function render(fb:Framebuffer):Void 
-	{				
-		engine.render(fb);
-	}
+		System.notifyOnRender(engine.render);
+		Scheduler.addTimeTask(engine.update, 0, 1 / 60);
+	}	
 }

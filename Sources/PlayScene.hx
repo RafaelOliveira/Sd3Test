@@ -38,10 +38,9 @@ class PlayScene extends Scene
 			for (x in 0...places[z].length)
 			{
 				if (places[z][x] != 0)
-				{
-					
+				{					
 					var box = add(new Box(x * 2, z * 2));
-					collision.add('boxes', box);
+					collision.add(box, 'boxes');
 				}					
 			}
 		}		
@@ -69,15 +68,15 @@ class PlayScene extends Scene
 		//if (Mouse.isHeld())
 		//	camera.updateAngleByMouse(0.005, Mouse.dx, Mouse.dy);			
 
-		if (Keyboard.isHeld('left'))			
+		if (Keyboard.isHeld('left'))
 			camera.rotation.y += 0.05;
-		else if (Keyboard.isHeld('right'))			
+		else if (Keyboard.isHeld('right'))
 			camera.rotation.y -= 0.05;
 		
-		if (Keyboard.isHeld('up'))			
+		if (Keyboard.isHeld('up'))
 			camera.moveForward(0.1);			
-		else if (Keyboard.isHeld('down'))			
-			camera.moveBackward(0.1);		
+		else if (Keyboard.isHeld('down'))
+			camera.moveBackward(0.1);
 
 		collision.separateArea('boxes', camera.position, 1, 1);		
 					
